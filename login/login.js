@@ -36,23 +36,19 @@ async function showSpinnerAndRedirect(isRegister) {
 
   try {
     if (isRegister) {
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+      const username = document.getElementById('registerUsername').value;
+      const nombre = document.getElementById('registerNombre').value;
 
-    //traer los usuarios. Si ya existe uno con ese mail tirar error
-    //si no, hacer un post a la base de datos
-      if (existingUsers.length > 0) {
-        alert("Ya existe un usuario con ese correo.");
-        spinnerOverlay.classList.add("d-none");
-        return;
-      }
-
-      /*Algo así?
-      fetch('http://localhost:3000/alumnos', {
+       fetch('http://localhost:3000/usuarios/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          nombre: name,
+          nombre: nombre,
           email: email,
-          password: password
+          password: password,
+          username: username
         })
       })
         .then(res => res.json())
@@ -60,23 +56,41 @@ async function showSpinnerAndRedirect(isRegister) {
           console.log('Alumno creado:', data);
         })
         .catch(error => console.error('Error al crear alumno:', error));
-      */
+
+     setTimeout(() => {
+          window.location.href = "../alumno/dashboard/dashboard.html";
+        }, 2000);
 
     } else {
-  
-      // acá hacer un get para buscar el usuario del login, si no existe el usuario tirar error
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const response = await fetch("http://localhost:3000/usuarios/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email, password: password }),
+      });
 
-      if (users.length === 0 || users.contraseña != contraseña) {
-        alert("Usuario o contraseña incorrectos.");
-        spinnerOverlay.classList.add("d-none");
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error);
         return;
       }
+
+      const user = data.user;
+
+      if (user.rol === "ALUMNO") {
+        setTimeout(() => {
+          window.location.href = "../alumno/dashboard/dashboard.html";
+        }, 2000);
+      } else if (user.rol === "PROFESOR") {
+        setTimeout(() => {
+          window.location.href = "../profesor/panel-control/panel-control.html";
+        }, 2000);
+      }
     }
-
-    setTimeout(() => {
-      window.location.href = '../dashboard/dashboard.html';
-    }, 2000);
-
   } catch (error) {
     console.error("Error:", error);
     alert("Ocurrió un error inesperado.");
