@@ -1,0 +1,101 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+.navbar {
+    width: 100%;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.navbar-brand img {
+    margin-right: 10px;
+}
+
+.hero {
+    background: linear-gradient(90deg, #f0f4ff 50%, white 50%);
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: -100px;
+    width: 500px;
+    height: 500px;
+    background: #e0e7ff;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-primary {
+    background-color: #0a58ca;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #084298;
+}
+
+.btn-outline-primary {
+    border-color: #0a58ca;
+    color: #0a58ca;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0a58ca;
+    color: white;
+}
+
+#features img {
+    margin-bottom: 1rem;
+}
+
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+.blockquote {
+    background: white;
+    border-left: 4px solid #0a58ca;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.scroll-cursos {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+
+.scroll-cursos::-webkit-scrollbar {
+    height: 8px;
+}
+
+.scroll-cursos::-webkit-scrollbar-thumb {
+    background: #0a58ca;
+    border-radius: 4px;
+}
+
+.scroll-cursos .card {
+    min-width: 300px;
+    flex: 0 0 auto;
+}
+
+footer {
+    background: #1a1a1a;
+}
