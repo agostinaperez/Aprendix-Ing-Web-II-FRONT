@@ -1,34 +1,26 @@
-const btnLogin = document.getElementById("btnLogin");
-const btnRegister = document.getElementById("btnRegister");
-const loginForm = document.getElementById("loginForm");
-const registerForm = document.getElementById("registerForm");
-const formImage = document.getElementById("form-image");
-const spinnerOverlay = document.getElementById("spinnerOverlay");
+const tabLogin = document.getElementById('tabLogin');
+const tabRegister = document.getElementById('tabRegister');
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const spinnerOverlay = document.getElementById('spinnerOverlay');
+const authImage = document.getElementById('authImage');
 
-btnLogin.addEventListener("click", () => {
-  btnLogin.classList.add("active");
-  btnRegister.classList.remove("active");
-  loginForm.classList.remove("d-none");
-  registerForm.classList.add("d-none");
-  formImage.style.backgroundImage = "url('../../resources/loginImg.jpg')";
+tabLogin.addEventListener('click', () => {
+  tabLogin.classList.add('active');
+  tabRegister.classList.remove('active');
+  loginForm.classList.add('active');
+  registerForm.classList.remove('active');
+
+  authImage.src = "../resources/loginImg.jpg";
 });
 
-btnRegister.addEventListener("click", () => {
-  btnRegister.classList.add("active");
-  btnLogin.classList.remove("active");
-  loginForm.classList.add("d-none");
-  registerForm.classList.remove("d-none");
-  formImage.style.backgroundImage = "url('../../resources/registerImg.jpg')";
-});
+tabRegister.addEventListener('click', () => {
+  tabRegister.classList.add('active');
+  tabLogin.classList.remove('active');
+  registerForm.classList.add('active');
+  loginForm.classList.remove('active');
 
-loginForm.addEventListener("submit", function (e) {
-  e.preventDefault();
-  showSpinnerAndRedirect(false);
-});
-
-registerForm.addEventListener("submit", function (e) {
-  e.preventDefault();
-  showSpinnerAndRedirect(true);
+  authImage.src = "../resources/registerImg.jpg";
 });
 
 async function showSpinnerAndRedirect(isRegister) {
@@ -41,7 +33,7 @@ async function showSpinnerAndRedirect(isRegister) {
       const username = document.getElementById('registerUsername').value;
       const nombre = document.getElementById('registerNombre').value;
 
-       fetch('http://localhost:3000/usuarios/register', {
+      await fetch('http://localhost:3000/usuarios/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -51,15 +43,15 @@ async function showSpinnerAndRedirect(isRegister) {
           username: username
         })
       })
-        .then(res => res.json())
-        .then(data => {
-          console.log('Alumno creado:', data);
-        })
-        .catch(error => console.error('Error al crear alumno:', error));
+      .then(res => res.json())
+      .then(data => {
+        console.log('Alumno creado:', data);
+      })
+      .catch(error => console.error('Error al crear alumno:', error));
 
-     setTimeout(() => {
-          window.location.href = "../alumno/dashboard/dashboard.html";
-        }, 2000);
+      setTimeout(() => {
+        window.location.href = "../alumno/dashboard/dashboard.html";
+      }, 20000);
 
     } else {
       const email = document.getElementById('loginEmail').value;
@@ -76,6 +68,7 @@ async function showSpinnerAndRedirect(isRegister) {
 
       if (!response.ok) {
         alert(data.error);
+        spinnerOverlay.classList.add("d-none");
         return;
       }
 
@@ -84,7 +77,7 @@ async function showSpinnerAndRedirect(isRegister) {
       if (user.rol === "ALUMNO") {
         setTimeout(() => {
           window.location.href = "../alumno/dashboard/dashboard.html";
-        }, 2000);
+        }, 20000);
       } else if (user.rol === "PROFESOR") {
         setTimeout(() => {
           window.location.href = "../profesor/panel-control/panel-control.html";
