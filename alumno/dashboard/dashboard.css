@@ -1,0 +1,41 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+.navbar {
+    width: 100%;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    padding-left: 10px;
+    padding-right: 5px;
+}
+
+.navbar-brand img {
+    margin-right: 10px;
+}
+
+.container-fluid .navbar-brand {
+    font-weight: bold;
+}
+
+.nav-item {
+    padding-right: 20px;
+    font-size: 17px;
+}
+
+.search-section {
+    padding: 60px 0;
+}
+
+.search-input {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-results {
+    margin-top: 40px;
+}
+
+.card {
+    margin-bottom: 20px;
+}

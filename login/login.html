@@ -53,20 +53,24 @@
       <div id="registerForm" class="form-switcher">
         <div class="auth-title">Crea tu cuenta</div>
         <form>
-          <div class="mb-3">
-            <label for="registerName" class="form-label">Nombre completo</label>
-            <input type="text" class="form-control" id="registerName" placeholder="Ingresa tu nombre" required>
+          <div class="mb-2">
+            <label for="registerName" class="form-label fw-semibold">Nombre completo</label>
+            <input type="text" class="form-control" id="registerName" placeholder="Jose Perez" required>
           </div>
           <div class="mb-3">
-            <label for="registerUsername" class="form-label">Nombre de usuario</label>
-            <input type="text" class="form-control" id="registerUsername" placeholder="Ingresa tu usuario" required>
+            <label for="registerUsername" class="form-label fw-semibold">Nombre de usuario <br>
+<!-- 
+              ASUMIMOS QUE EL UNICO QUE SE REGISTRA ES EL ALUMNO Y LO DIFERENCIAMOS CON LOS 3 DEL DNI -->
+
+              <small class="detail-user">(inicial nombre + apellido + ultimos 3 digitos DNI)</small> </label>
+            <input type="text" class="form-control" id="registerUsername" placeholder="jperez123" required>
           </div>
           <div class="mb-3">
-            <label for="registerEmail" class="form-label">Correo electrónico</label>
+            <label for="registerEmail" class="form-label fw-semibold">Correo electrónico</label>
             <input type="email" class="form-control" id="registerEmail" placeholder="ejemplo@correo.com" required>
           </div>
           <div class="mb-3">
-            <label for="registerPassword" class="form-label">Contraseña</label>
+            <label for="registerPassword" class="form-label fw-semibold">Contraseña</label>
             <input type="password" class="form-control" id="registerPassword" placeholder="********" required>
           </div>
           <div class="d-grid">
