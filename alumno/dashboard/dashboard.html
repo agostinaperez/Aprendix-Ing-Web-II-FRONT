@@ -1,13 +1,112 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Aprendix - Alumno</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pantalla de Búsqueda - E-Learning</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Estilos personalizados -->
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .search-section {
+      padding: 60px 0;
+    }
+    .search-input {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .search-results {
+      margin-top: 40px;
+    }
+    .card {
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
-<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+<body>
 
-  offcanvas
+  <!-- Barra de navegación -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="#">E-Learning</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Cursos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Comunidad</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Perfil</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sección de búsqueda -->
+  <section class="search-section text-center">
+    <div class="container">
+      <h2 class="mb-4">Buscar Cursos</h2>
+      <div class="search-input">
+        <input type="text" id="searchInput" class="form-control form-control-lg" placeholder="¿Qué deseas aprender?">
+      </div>
+    </div>
+  </section>
+
+  <!-- Resultados de búsqueda -->
+  <section class="search-results">
+    <div class="container">
+      <div class="row" id="resultsContainer">
+        <!-- Los resultados se insertarán aquí -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Bootstrap JS y dependencias -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Script personalizado -->
+  <script>
+    const courses = [
+      { title: 'Introducción a JavaScript', description: 'Aprende los fundamentos de JavaScript desde cero.' },
+      { title: 'HTML y CSS para Principiantes', description: 'Construye sitios web con HTML y CSS.' },
+      { title: 'React Avanzado', description: 'Domina React y crea aplicaciones web modernas.' },
+      { title: 'Diseño UX/UI', description: 'Mejora la experiencia de usuario en tus proyectos.' },
+      { title: 'Python para Ciencia de Datos', description: 'Analiza datos y crea modelos predictivos con Python.' }
+    ];
+
+    const searchInput = document.getElementById('searchInput');
+    const resultsContainer = document.getElementById('resultsContainer');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      resultsContainer.innerHTML = '';
+
+      const filteredCourses = courses.filter(course => course.title.toLowerCase().includes(query));
+
+      if (filteredCourses.length === 0) {
+        resultsContainer.innerHTML = '<p class="text-center">No se encontraron resultados.</p>';
+        return;
+      }
+
+      filteredCourses.forEach(course => {
+        const col = document.createElement('div');
+        col.className = 'col-md-4';
+        col.innerHTML = `
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">${course.title}</h5>
+              <p class="card-text">${course.description}</p>
+              <a href="#" class="btn btn-primary">Ver Curso</a>
+            </div>
+          </div>
+        `;
+        resultsContainer.appendChild(col);
+      });
+    });
+  </script>
 </body>
 </html>
+
