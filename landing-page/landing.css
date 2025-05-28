@@ -46,15 +46,17 @@ body {
 }
 
 .btn {
-    color: white;
+    --bs-btn-color: white!important;
     border: none;
     border-radius: 80px;
     align-content: center;
-
 }
 
 .btn-light {
     background-color: #7FCECF;
+    --bs-btn-active-color: white;
+    --bs-btn-active-bg: #49BBBD;
+    --bs-btn-active-border-color: #49BBBD;
 }
 
 .btn-light:hover {
@@ -64,6 +66,10 @@ body {
 
 .btn-primary {
     background-color: #7FCECF;
+    --bs-btn-active-color: white;
+    --bs-btn-active-bg: #ADE5E5;
+    --bs-btn-active-border-color: #ADE5E5;
+    
 }
 
 .btn-primary:hover {
@@ -71,13 +77,14 @@ body {
 }
 
 .btn-outline-primary {
-    border-color: #49BBBD;
+    --bs-btn-border-color: #49BBBD;
     color: #49BBBD;
-}
-
-.btn-outline-primary:hover {
-    background-color: #7FCECF;
-    color: white;
+    --bs-btn-active-color: white;
+    --bs-btn-active-bg: #7FCECF;
+    --bs-btn-active-border-color: #7FCECF;
+    --bs-btn-hover-color: white;
+    --bs-btn-hover-bg: #7FCECF;
+    --bs-btn-hover-border-color: none;
 }
 
 .role-card {
@@ -170,9 +177,10 @@ body {
     background-color: white;
 }
 
-.text-info {
-    font-size: 54px;
+#precios {
+    font-size: 64px;
     color: #49BBBD;
+    margin-bottom: 4rem;
 }
 
 #mejor {
@@ -202,6 +210,9 @@ body {
 
 #coorp {
     background-color: #7FCECF;
+    color: white;
+    border-radius: 15px;
+    padding: 5px;
 }
 
 .lista-caracteristicas {
@@ -247,9 +258,8 @@ body {
 }
 
 footer {
-    background: #252641;
-}
-
-footer p {
-    color: #252641;
+    background-color: #252641;
+    p {
+    color: #B2B3CF;
+    }
 }

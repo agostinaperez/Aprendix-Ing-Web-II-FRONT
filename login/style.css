@@ -71,6 +71,8 @@ body {
   border-radius: 36px;
   padding: 10px 16px;
   font-weight: 600;
+  --bs-btn-active-bg: #49BBBD;
+  --bs-btn-active-border-color: #49BBBD;
 }
 .btn:hover{
   background-color: #49BBBD;
