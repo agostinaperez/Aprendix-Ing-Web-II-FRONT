@@ -33,14 +33,14 @@ async function auth(event, isRegistro) {
 
     if (isRegistro) {
       const nombre = document.getElementById('registerName').value;
-      const username = document.getElementById('registerUsername').value;
+      const usuario = document.getElementById('registerUsername').value;
       const email = document.getElementById('registerEmail').value;
       const password = document.getElementById('registerPassword').value;
 
       response = await fetch("http://localhost:3000/usuario/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, email, password, username }),
+        body: JSON.stringify({ nombre, email, usuario, password }),
       });
 
       data = await response.json();
