@@ -23,70 +23,76 @@ tabRegister.addEventListener('click', () => {
   authImage.src = "../resources/registerImg.jpg";
 });
 
-async function showSpinnerAndRedirect(isRegister) {
+async function auth(event, isRegistro) {
+  event.preventDefault();
   spinnerOverlay.classList.remove("d-none");
 
   try {
-    if (isRegister) {
+    let response;
+    let data;
+
+    if (isRegistro) {
+      const nombre = document.getElementById('registerName').value;
+      const username = document.getElementById('registerUsername').value;
       const email = document.getElementById('registerEmail').value;
       const password = document.getElementById('registerPassword').value;
-      const username = document.getElementById('registerUsername').value;
-      const nombre = document.getElementById('registerNombre').value;
 
-      await fetch('http://localhost:3000/usuarios/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre: nombre,
-          email: email,
-          password: password,
-          username: username
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        console.log('Alumno creado:', data);
-      })
-      .catch(error => console.error('Error al crear alumno:', error));
+      response = await fetch("http://localhost:3000/usuario/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre, email, password, username }),
+      });
 
-      setTimeout(() => {
-        window.location.href = "../alumno/dashboard/dashboard.html";
-      }, 20000);
+      data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error || "Error al registrar usuario");
+        spinnerOverlay.classList.add("d-none");
+        return;
+      }
+
+      console.log("Alumno registrado:", data);
+      window.location.href = "../alumno/dashboard/dashboard.html";
 
     } else {
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
-      const response = await fetch("http://localhost:3000/usuarios/login", {
+
+      response = await fetch("http://localhost:3000/usuario/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: email, password: password }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      data = await response.json();
 
       if (!response.ok) {
-        alert(data.error);
+        alert(data.error || "Error al iniciar sesión");
         spinnerOverlay.classList.add("d-none");
         return;
       }
 
       const user = data.user;
+      console.log("Usuario logueado:", user);
 
       if (user.rol === "ALUMNO") {
-        setTimeout(() => {
-          window.location.href = "../alumno/dashboard/dashboard.html";
-        }, 20000);
+        window.location.href = '../alumno/dashboard/dashboard.html';
       } else if (user.rol === "PROFESOR") {
-        setTimeout(() => {
-          window.location.href = "../profesor/panel-control/panel-control.html";
-        }, 2000);
+        window.location.href = '../profesor/panel-control/panel-control.html';
       }
     }
+
   } catch (error) {
     console.error("Error:", error);
     alert("Ocurrió un error inesperado.");
     spinnerOverlay.classList.add("d-none");
   }
 }
+
+document.getElementById("loginFormElement").addEventListener("submit", function (e) {
+  auth(e, false);
+});
+
+document.getElementById("registerFormElement").addEventListener("submit", function (e) {
+  auth(e, true); 
+});
