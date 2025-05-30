@@ -23,6 +23,28 @@ body {
     font-size: 17px;
 }
 
+#icon-menu {
+    padding-top: 5px;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    margin: 15px;
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: xx-large;
+}
+.card img {
+    width: 256px;
+    height: 227px;
+}
+
+
 .search-section {
     padding: 60px 0;
 }
@@ -30,6 +52,7 @@ body {
 .search-input {
     max-width: 600px;
     margin: 0 auto;
+    padding-bottom: 30px;
 }
 
 .search-results {
