@@ -102,11 +102,11 @@ body {
 }
 
 #paraProfesores {
-    background-image: url('../resources/profesoresImg.png');
+    background-image: url('resources/profesoresImg.png');
 }
 
 #paraEstudiantes {
-    background-image: url('../resources/estudiantesImg.png');
+    background-image: url('resources/estudiantesImg.png');
 }
 
 #features img {
