@@ -5,6 +5,16 @@ const registerForm = document.getElementById('registerForm');
 const spinnerOverlay = document.getElementById('spinnerOverlay');
 const authImage = document.getElementById('authImage');
 
+window.addEventListener("DOMContentLoaded", () => {
+  const storedUser = localStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  if (user) {
+    const email = document.getElementById('loginEmail');
+    
+    email.value = user.email;
+  }
+});
+
 tabLogin.addEventListener('click', () => {
   tabLogin.classList.add('active');
   tabRegister.classList.remove('active');

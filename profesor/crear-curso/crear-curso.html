@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bienvenido!</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="../resources/icon.png" type="image/png">
+</head>
+
+<body>
+    <form id="cursoForm" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Título del curso</label>
+            <input type="text" class="form-control" id="titulo" name="titulo" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Categoría</label>
+            <select class="form-select" id="categoria" name="categoria" required>
+                <option value="">Seleccionar una categoría</option>
+                <option value="Programación">Programación</option>
+                <option value="Matemática">Matemática</option>
+                <option value="Diseño">Diseño</option>
+                <option value="Idiomas">Idiomas</option>
+                <option value="Ciencia de datos">Ciencia de datos</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="imagen" class="form-label">Imagen del curso</label>
+            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Crear curso</button>
+    </form>
+    <script src="crear-curso.js"></script>
+</body>
+</html>
