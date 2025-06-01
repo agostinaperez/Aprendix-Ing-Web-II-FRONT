@@ -52,12 +52,13 @@ async function auth(event, isRegistro) {
       }
 
       console.log("Alumno registrado:", data);
+      sessionStorage.setItem('user',  JSON.stringify(data));
       window.location.href = "../alumno/dashboard/dashboard.html";
 
     } else {
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
-
+      const remember = document.getElementById('remember').checked;
       response = await fetch("http://localhost:3000/usuario/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -70,15 +71,21 @@ async function auth(event, isRegistro) {
         alert(data.error || "Error al iniciar sesión");
         spinnerOverlay.classList.add("d-none");
         return;
-      }
+      } else {
+        const user = data.user;
+        console.log("Usuario logueado:", user);
 
-      const user = data.user;
-      console.log("Usuario logueado:", user);
+        if (remember) {
+          localStorage.setItem('user', JSON.stringify(user));
+        } else {
+          sessionStorage.setItem('user',  JSON.stringify(user));
+        }
 
-      if (user.rol === "ALUMNO") {
-        window.location.href = '../alumno/dashboard/dashboard.html';
-      } else if (user.rol === "PROFESOR") {
-        window.location.href = '../profesor/panel-control/panel-control.html';
+        if (user.rol === "ALUMNO") {
+          window.location.href = '../alumno/dashboard/dashboard.html';
+        } else if (user.rol === "PROFESOR") {
+          window.location.href = '../profesor/panel-control/panel-control.html';
+        }
       }
     }
 

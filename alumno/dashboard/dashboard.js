@@ -1,3 +1,19 @@
+window.addEventListener("DOMContentLoaded", () => {
+  const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  const userNombre = document.getElementById('userName');
+  if (userNombre) {
+    userNombre.textContent = user.nombre;
+  }
+});
+
+function logout() {
+  localStorage.removeItem('user');
+  sessionStorage.removeItem('user');
+  window.location.href = '../../login/login.html';
+}
+
+
 const courses = [
     { title: 'Desarrollo Web', description: 'Aprende HTML, CSS, JavaScript y más.', img: "../../resources/cursoWeb.png"},
     { title: 'Diseño UX/UI', description: 'Crea experiencias digitales efectivas.', img: "../../resources/cursoUXUI.png"},
