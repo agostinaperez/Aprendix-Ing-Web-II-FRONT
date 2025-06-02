@@ -7,18 +7,13 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-function logout() {
-  sessionStorage.removeItem('user');
-  window.location.href = '../../login/login.html';
-}
-
 const coursesAlumno = [
   { title: 'AAAAAAAHHHHHHHH', description: 'Aprende HTML, CSS, JavaScript y más.', img: "../../resources/cursoWeb.png" },
   { title: 'Diseño UX/UI', description: 'Crea experiencias digitales efectivas.', img: "../../resources/cursoUXUI.png" },
   { title: 'Python para Ciencia de Datos', description: 'Analiza datos y crea modelos predictivos con Python.', img: "../../resources/cursoData.jpg" }
 ];
 
-const courses = [
+const coursesTodos = [
   { title: 'Desarrollo Web', description: 'Aprende HTML, CSS, JavaScript y más.', img: "../../resources/cursoWeb.png" },
   { title: 'Diseño UX/UI', description: 'Crea experiencias digitales efectivas.', img: "../../resources/cursoUXUI.png" },
   { title: 'Marketing Digital', description: 'Domina estrategias de marketing online.', img: "../../resources/cursoMarketing.png" },
@@ -29,11 +24,14 @@ const courses = [
   { title: 'Python para Ciencia de Datos', description: 'Analiza datos y crea modelos predictivos con Python.', img: "../../resources/cursoData.jpg" }
 ];
 
+let cursos = [];
+
 const searchInput = document.getElementById('searchInput');
 const resultsContainer = document.getElementById('resultsContainer');
+const todosCursosContainer = document.getElementById('todosCursos');
 
 document.addEventListener("DOMContentLoaded", () => {
-  showCursos(courses);
+  showCursos(coursesTodos);
   showCursosbyAlumnoTitle(coursesAlumno);
 });
 
@@ -68,12 +66,13 @@ function showCursos(courses) {
 
 searchInput.addEventListener('input', () => {
   const query = searchInput.value.toLowerCase();
-  resultsContainer.innerHTML = '';
+  resultsContainer.innerHTML = '<p class="text-muted text-center">Resultados de busqueda:</p>';
+  todosCursosContainer.innerHTML='';
 
-  const filteredCourses = courses.filter(course => course.title.toLowerCase().includes(query));
+  const filteredCourses = cursos.filter(course => course.title.toLowerCase().includes(query));
 
   if (filteredCourses.length === 0) {
-    resultsContainer.innerHTML = '<p class="text-center">No se encontraron resultados.</p>';
+    resultsContainer.innerHTML = '<p class="text-center text-muted" style="padding-bottom: 40px;">No se encontraron resultados.</p>';
     return;
   }
 
@@ -119,10 +118,11 @@ function showCursosbyAlumnoTitle(courses) {
 // Interceptar clic en "Mis cursos"
 document.getElementById('linkMisCursos')?.addEventListener('click', (e) => {
   e.preventDefault();
-  localStorage.setItem('selectedCourses', 'alumno'); 
+  localStorage.setItem('selectedCourses', 'alumno'); //esto no esta guardando bien
   showCursos(coursesAlumno);// Guardar selección
   document.getElementById('buscarCursos').innerHTML= 'Buscar Mis Cursos';
   document.getElementById('searchInput').placeholder = "¿Qué deseas seguir aprendiendo?";
+  cursos=coursesAlumno;
 });
 
 // Si quieres que haya un botón para volver a ver todos los cursos:
@@ -130,4 +130,7 @@ document.getElementById('linkTodosCursos')?.addEventListener('click', (e) => {
   e.preventDefault();
   localStorage.setItem('selectedCourses', 'todos');
   showCursos(courses);
+  document.getElementById('buscarCursos').innerHTML= 'Buscar Cursos';
+  document.getElementById('searchInput').placeholder = "¿Qué deseas aprender?";
+  cursos=coursesTodos;
 });

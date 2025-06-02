@@ -24,8 +24,7 @@ body {
 }
 
 .btn {
-    --bs-btn-color: white!important;
-    border: none;
+    --bs-btn-color: white;
     border-radius: 80px;
     align-content: center;
 }
