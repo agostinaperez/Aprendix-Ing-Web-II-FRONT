@@ -8,7 +8,6 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function logout() {
-  localStorage.removeItem('user');
   sessionStorage.removeItem('user');
   window.location.href = '../../login/login.html';
 }
