@@ -12,6 +12,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="dashboard.css" />
   <link rel="stylesheet" href="../../style.css">
+  <script type="module" src="dashboard.js"></script>
 </head>
 
 <body>
@@ -29,13 +30,13 @@
         <div class="navbarNav">
           <ul class="nav navbar-nav justify-content-end">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="#scrollInicio">Inicio</a>
+              <a id="linkTodosCursos" class="nav-link" aria-current="page" href="#scrollInicio">Inicio</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link">Mis cursos</a>
+              <a id="linkMisCursos" class="nav-link" href="#">Mis cursos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link">Hola, <span id="userName"></span></a>
+              <a class="nav-link" title="Editar Perfil" href="../perfil/perfil.html">Hola, <span id="userName"></span></a>
             </li>
             <!-- offcanvas con los cursos del usuario -->
             <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas"
@@ -51,15 +52,16 @@
   <!-- Menú lateral (offcanvas) -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
     <div class="offcanvas-header">
-      <h5 id="offcanvasMenuLabel">Menú</h5>
+      <h5 id="offcanvasMenuLabel"><img src="../../resources/icon-alt.png" alt="Logo" width="25" height="20"
+            class="d-inline-block align-text-top"> Mis Cursos</h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
     </div>
-    <div class="offcanvas-body">
+    <div class="offcanvas-body bg-body-tertiary">
       <ul class="nav flex-column">
-        <li class="nav-item active"><img src="../../resources/icon-alt.png" alt="Logo" width="25" height="20"
-            class="d-inline-block align-text-top"> Mis Cursos</li>
-        <li id="cursosAlumno" class="nav-item"></li>
-        <button id="logout" onclick="logout()">Cerrar sesion</button>
+        <div id="cursosAlumno">
+          <!-- aca van los cursos a los que esta inscripto el alumno -->
+        </div>
+        <!-- <button id="logout" onclick="logout()">Cerrar sesion</button> -->
       </ul>
     </div>
   </div>
@@ -68,7 +70,7 @@
   <!-- Sección de búsqueda -->
   <section id="scrollInicio" class="search-section">
     <div class="container">
-      <h2 class="mb-4 text-center">Buscar Cursos</h2>
+      <h2 id="buscarCursos" class="mb-4 text-center">Buscar Cursos</h2>
       <div class="search-input">
         <input type="text" id="searchInput" class="form-control form-control-lg" placeholder="¿Qué deseas aprender?">
       </div>
@@ -100,7 +102,7 @@
 
   <!-- Bootstrap JS y dependencias -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="dashboard.js"></script>
+
 </body>
 
 </html>
