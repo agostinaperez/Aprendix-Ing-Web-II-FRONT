@@ -1,3 +1,33 @@
+const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+const appendAlert = (message, type) => {
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = [
+    `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+    `   <div>${message}</div>`,
+    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+    '</div>'
+  ].join('')
+
+  alertPlaceholder.append(wrapper)
+}
+
+const alertTrigger = document.getElementById('liveAlertBtn')
+if (alertTrigger) {
+  alertTrigger.addEventListener('click', () => {
+    setTimeout(appendAlert('Curso creado correctamente!', 'success'), 80000)
+    
+  })
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  const userNombre = document.getElementById('userName');
+  if (userNombre) {
+    userNombre.textContent = user.nombre;
+  }
+});
+
 document.getElementById('cursoForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const formData = new FormData(e.target);

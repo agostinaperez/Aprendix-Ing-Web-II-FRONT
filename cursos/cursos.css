@@ -1,0 +1,27 @@
+.banner {
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    transition: background-image 0.5s ease-in-out;
+}
+
+.card-over-hero {
+    margin-top: -200px;
+    /* lift the card over the background */
+}
+
+.btn-primary{
+    --bs-btn-border-color: #7FCECF;
+}
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}

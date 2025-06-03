@@ -46,11 +46,12 @@ body {
     --bs-btn-active-color: white;
     --bs-btn-active-bg: #ADE5E5;
     --bs-btn-active-border-color: #ADE5E5;
-    
+    --bs-btn-border-color: #7FCECF;
 }
 
 .btn-primary:hover {
-    background-color: #ADE5E5;
+    --bs-btn-hover-bg: #ADE5E5;
+    --bs-btn-hover-border-color:#ADE5E5;
 }
 
 .btn-outline-primary {
@@ -76,4 +77,11 @@ footer {
     p {
     color: #B2B3CF;
     }
+}
+.btn-danger {
+  background-color: white;
+  --bs-btn-border-color: red!important;
+  --bs-btn-active-border-color: red!important;
+  --bs-btn-color: red!important;
+  --bs-btn-hover-border-color: red;
 }

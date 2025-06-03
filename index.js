@@ -1,12 +1,12 @@
-const courses = [
-    { title: 'Desarrollo Web', description: 'Aprende HTML, CSS, JavaScript y más.', img: "resources/cursoWeb.png"},
-    { title: 'Diseño UX/UI', description: 'Crea experiencias digitales efectivas.', img: "resources/cursoUXUI.png"},
-    { title: 'Marketing Digital', description: 'Domina estrategias de marketing online.', img: "resources/cursoMarketing.png"},
-    { title: 'Python para Principiantes', description: 'Aprende desde cero practicando.', img: "resources/cursoPython.png"},
-    { title: 'Gestión de Proyectos', description: 'Planifica y lidera proyectos con éxito', img: "resources/cursoGestProy.png"},
-    { title: 'Introducción a JavaScript', description: 'Aprende los fundamentos de JavaScript desde cero.', img: "resources/cursoJava.jpg"},
-    { title: 'React Avanzado', description: 'Domina React y crea aplicaciones web modernas.', img: "resources/cursoReact.jpg"},
-    { title: 'Python para Ciencia de Datos', description: 'Analiza datos y crea modelos predictivos con Python.', img: "resources/cursoData.jpg"}
+const courses= [
+  {id:0, title: 'Desarrollo Web', description: 'Aprende HTML, CSS, JavaScript y más.', img: "resources/cursoWeb.png" },
+  {id:1, title: 'Diseño UX/UI', description: 'Crea experiencias digitales efectivas.', img: "resources/cursoUXUI.png" },
+  {id:2, title: 'Marketing Digital', description: 'Domina estrategias de marketing online.', img: "resources/cursoMarketing.png" },
+  {id:3, title: 'Python para Principiantes', description: 'Aprende desde cero practicando.', img: "resources/cursoPython.png" },
+  {id:4, title: 'Gestión de Proyectos', description: 'Planifica y lidera proyectos con éxito.', img: "resources/cursoGestProy.png" },
+  {id:5, title: 'Introducción a JavaScript', description: 'Aprende los fundamentos de JavaScript desde cero.', img: "resources/cursoJava.jpg" },
+  {id:6, title: 'React Avanzado', description: 'Domina React y crea aplicaciones web modernas.', img: "resources/cursoReact.jpg" },
+  {id:7, title: 'Python para Ciencia de Datos', description: 'Analiza datos y crea modelos predictivos con Python.', img: "resources/cursoData.jpg" }
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -23,13 +23,13 @@ function cursos(){
         <div class="card-body">
             <h5 class="card-title">${courses[index].title}</h5>
             <p class="card-text text-muted">${courses[index].description}</p>
-            <a href="#" class="btn btn-outline-primary mt-2">Ver curso</a>
+            <a href="cursos/curso.html?id=${courses[index].id}&from=index" class="btn btn-outline-primary mt-2">Ver curso</a>
         </div>
         `;
         scrollCursos.appendChild(curso);
     }
     const vermas = document.createElement('a');
-    vermas.href = "cursos/cursos.html";
+    vermas.href = "cursos/cursos.html?from=index&id=-1";
     vermas.className = "btn btn-primary";
     vermas.innerHTML = `Ver más`;
     scrollCursos.appendChild(vermas);
