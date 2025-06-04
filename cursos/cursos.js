@@ -1,4 +1,4 @@
-const { createElement } = require("react");
+
 
 const courses = [
     { id: 0, title: 'Desarrollo Web', description: 'Aprende HTML, CSS, JavaScript y más.', img: "../resources/cursoWeb.png" },
@@ -11,7 +11,13 @@ const courses = [
     { id: 7, title: 'Python para Ciencia de Datos', description: 'Analiza datos y crea modelos predictivos con Python.', img: "../resources/cursoData.jpg" }
 ];
 const coursesAlumno = [
-    { id: 0, title: 'AAAAAAAHHHHHHHH', description: 'Aprende HTML, CSS, JavaScript y más.', img: "../../resources/cursoWeb.png" },
+    {
+        id: 0, title: 'Desarrollo Web', description: 'Aprende HTML, CSS, JavaScript y más.', img: "../../resources/cursoWeb.png",
+        clases: [
+            { id: 0, nombre: 'nose', descripcion: 'algo', vista: false },
+            { id: 1, nombre: 'algo', descripcion: 'algonose', vista: false }
+        ]
+    },
     { id: 1, title: 'Diseño UX/UI', description: 'Crea experiencias digitales efectivas.', img: "../../resources/cursoUXUI.png" },
     { id: 7, title: 'Python para Ciencia de Datos', description: 'Analiza datos y crea modelos predictivos con Python.', img: "../../resources/cursoData.jpg" }
 ];
@@ -56,60 +62,18 @@ function adaptnavbar(from) {
                     </div>
                 </div>
             </div>`;
+        document.getElementById("offcanvasMenu").innerHTML = '';
+        document.getElementById("offcanvasMenu").remove();
     } else if (from === "alumno") {
-        navbar.className = "navbar navbar-expand-lg sticky-top navbar-brand fixed-top align-items-center bg-body-tertiary";
-        navbar.innerHTML = `
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    <img src="../resources/icon.png" alt="Logo" width="35" height="30" class="d-inline-block align-text-top">
-                    Aprendix
-                </a>
-                <div class="navbarNav">
-                    <div class="navbarNav">
-                        <ul class="nav navbar-nav justify-content-end">
-                            <li class="nav-item">
-                                <a id="linkTodosCursos" class="nav-link" aria-current="page" href="#scrollInicio">Inicio</a>
-                            </li>
-                            <li class="nav-item">
-                                <a id="linkMisCursos" class="nav-link" href="#">Mis cursos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a id="editProfile" class="nav-link" title="Editar Perfil" href="../perfil/perfil.html">Hola, <span id="userName"></span></a>
-                            </li>
-                    <!-- offcanvas con los cursos del usuario -->
-                            <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
-                            <span id="icon-menu" class="material-symbols-outlined">menu</span>
-                        </ul>
-                    </div>
-                </div>
-            </div>`;
-        let offcanvas = document.createElement('div');
-        offcanvas.className = "offcanvas offcanvas-end";
-        offcanvas.tabIndex = "-1";
-        offcanvas.id = "offcanvasMenu";
-        // <div class= tabindex="-1" id= aria-labelledby="offcanvasMenuLabel">
-        offcanvas.innerHTML = `
-            <div class="offcanvas-header">
-                <h5 id="offcanvasMenuLabel"><img src="../resources/icon-alt.png" alt="Logo" width="25" height="20"
-                        class="d-inline-block align-text-top"> Mis Cursos</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
-            </div>
-            <div class="offcanvas-body bg-body-tertiary">
-                <ul class="nav flex-column">
-                    <div id="cursosAlumno">
-                    <!-- aca van los cursos a los que esta inscripto el alumno -->
-                    </div>
-                </ul>
-            </div>`;
-        body.appendChild(offcanvas);
         showCursosbyAlumnoTitle(coursesAlumno);
-    } else { //profesor
+    } else if (from === "profesor") { //profesor
+        document.getElementById("icon").href = "../resources/icon-alt.png";
         navbar.className = "navbar navbar-expand-lg sticky-top navbar-brand fixed-top align-items-center bg-body-tertiary";
         navbar.innerHTML = `
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="../resources/icon.png" alt="Logo" width="35" height="30" class="d-inline-block align-text-top">
-                    Aprendix
+                    <img src="../resources/icon-alt.png" alt="Logo" width="35" height="30" class="d-inline-block align-text-top">
+                    Aprendix | Profesor
                 </a>
                 <div class="navbarNav">
                     <div class="navbarNav">
@@ -128,6 +92,8 @@ function adaptnavbar(from) {
                 </div>
             </div>
         </nav>`;
+        document.getElementById("offcanvasMenu").innerHTML = '';
+        document.getElementById("offcanvasMenu").remove();
     }
 }
 
@@ -148,16 +114,14 @@ function printcurso(id, from) {
     const curso = courses.find(c => c.id === id);
     let cursodetalle = document.getElementById('curso-detalle');
     if (!curso) {
-        cursodetalle.innerHTML = '<p class="text-muted text-center">No se encontro el curso.</p>';
-    } else {
-        if (id === -1) { //todos los cursos
-            div = document.createElement('div');
-            div.id = "todosCursos";
-            div.className = "container-fluid";
+        if (id === parseInt(-1)) { //todos los cursos
             showCursos(courses);
-            cursodetalle.appendChild(div);
-        } else { //curso individual
-            cursodetalle.innerHTML = `
+        } else {
+            cursodetalle.innerHTML = '<p class="text-muted text-center" style="margin: 300px 0px 300px 0px;">No se encontro el curso.</p>';
+        }
+    } else {
+        //curso individual
+        cursodetalle.innerHTML = `
                     <div id="banner" class="banner" style="background-image: url('${curso.img}');">
                         <div class="text-center">
                             <h1 class="fw-bolder">${curso.title}</h1>
@@ -182,57 +146,162 @@ function printcurso(id, from) {
                             </div>
                         </div>
                         `;
-            inscripcion(id, from);
-        }
+        inscripcion(id, from);
+
     }
 }
 
 
 function inscripcion(id, from) {
-    inscripcion = document.getElementById('inscripcion')
+    inscripcion = document.getElementById('inscripcion');
     if (from === "alumno") {
-        if (!coursesAlumno.find(c => c.id === id)) {//alumno no inscripto
-            inscripcion.innerHTML = `<button class="btn btn-primary w-60 mb-3">Inscribirse</button>`;
+        cursoAlumno = coursesAlumno.find(c => c.id === id);
+        if (!cursoAlumno) {//alumno no inscripto
+            inscripcion.innerHTML = `<button class="btn btn-primary w-60 mb-3" onclick="inscribirAlumno()">Inscribirse</button>`;
         } else {
             ul = document.createElement('ul');
-            ul.className="nav nav-tabs";
-            ul.id="clasesTabs";
-            // ul.role="tablist";
-            coursesAlumno[id].clases.forEach(clase => {
+            ul.className = "nav nav-tabs";
+            ul.id = "clasesTabs";
+            cursoAlumno.clases.forEach(clase => {
                 const li = document.createElement('li');
-                li.className='nav-item';
+                li.className = 'nav-item';
                 li.innerHTML = `
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#clase${clase.id+1}" type="button" role="tab" aria-selected="true">
-                        Clase ${clase.id+1}
+                    <button class="nav-link btn-tab" data-bs-toggle="tab" data-bs-target="#clase${clase.id}" 
+                    type="button" role="tab" aria-selected="true" onclick="clasevista(${id}, ${clase.id})">
+                        Clase ${clase.id + 1}
                     </button>`;
                 ul.appendChild(li);
-            })
+            });
             inscripcion.appendChild(ul);
-            div = document.createElement('div');
-            div.className = "tab-content mt-3";
-            div.id = "clasesTabsContent";
-            coursesAlumno[id].clases.forEach(clase => {
-                const tabpane = createElement('div');
-                tabpane.className = "tab-pane fade show active";
-                tabpane.id = 'clase${clase.id+1}';
-                tabpane.innerHTML = `
+            cursoAlumno.clases.forEach(clase => {
+                div = document.createElement('div');
+                div.className = "tab-content mt-3"
+                div.innerHTML = `
+                <div class="tab-pane fade show" id = "clase${clase.id}">
                     <h5>${clase.nombre}</h5>
                     <p>${clase.descripcion}</p>
                     <a href="${clase.archivo}"><b>Material</b></a>
+                </div>
                 `;
-                div.appendChild(tabpane);
-            })
-            inscripcion.appendChild(div);
+                inscripcion.appendChild(div);
+            });
+
         }
-    } else if(from === "index"){
+    } else if (from === "index") {
         inscripcion.innerHTML = '<a href="../login/login.html" class="btn btn-primary w-60 mb-3">Comienza ahora</a>';
-    } else if(from === "profesor"){
-        inscripcion.innerHTML = '<a href="../profesor/gestion-cursos/modificar-curso.html" class="btn btn-primary w-60 mb-3">Modificar Curso</a>';
+    } else if (from === "profesor") {
+        cursoProfesor = courseProfesor.find(c => c.id === id);
+        if (!cursoProfesor) {//profesor no asignado a ese curso
+            inscripcion.innerHTML = '<p class="text-muted text-center" style="margin: 300px 0px 300px 0px;">No se encontro el curso.</p>';
+        } else {
+            inscripcion.innerHTML = `
+        <div class="row">
+            <button type="button" class="btn btn-primary w-60 mb-3" data-bs-toggle="modal" data-bs-target="#modalEdit">Editar Curso</button>
+            <button onclick="addClase(${id})" type="button" class="btn btn-primary w-60 mb-3" data-bs-toggle="modal" data-bs-target="#modalClase">Agregar Clase</button>
+        </div>
+        <div id="modalEdit" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title fs-5" id="modalLabel">Editar Curso</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="titulo" class="form-label">Título del curso</label>
+                            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="${cursoProfesor.titulo}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="${cursoProfesor.descripcion}"></textarea>
+                        </div>
+                        <div class="mb-3">
+                                <label for="categoria" class="form-label">Categoría</label>
+                                <select class="form-select" id="categoria" name="categoria" >
+                                    <option value="">Seleccionar una categoría</option>
+                                    <option value="Programación">Programación</option>
+                                    <option value="Matemática">Matemática</option>
+                                    <option value="Diseño">Diseño</option>
+                                    <option value="Idiomas">Idiomas</option>
+                                    <option value="Ciencia de datos">Ciencia de datos</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="imagen" class="form-label">Imagen del curso</label>
+                                <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*" placeholder="${cursoProfesor.imagen}">
+                            </div>
+                    </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger w-40" data-bs-dismiss="modal" onclick="deletecurso(${id})">Eliminar curso</button>
+                            <button type="button" class="btn btn-outline-primary w-40" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary w-40" data-bs-dismiss="modal" onclick="editCurso(${id})">Guardar cambios</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalClase" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5" id="modalLabel">Agregar Clase</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre de la clase</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="archivo" class="form-label">Archivo de la clase</label>
+                        <input type="file" class="form-control" id="archivo" name="archivo" accept="image/*" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary w-40" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary w-40" data-bs-dismiss="modal" onclick="addClase(${id})">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>`;
+            ul = document.createElement('ul');
+            ul.className = "nav nav-tabs";
+            ul.id = "clasesTabs";
+            cursoProfesor.clases.forEach(clase => {
+                const li = document.createElement('li');
+                li.className = 'nav-item';
+                li.innerHTML = `
+                    <button class="nav-link btn-tab" data-bs-toggle="tab" data-bs-target="#clase${clase.id}" 
+                    type="button" role="tab" aria-selected="true" onclick="clasevista(${id}, ${clase.id})">
+                        Clase ${clase.id + 1}
+                    </button>`;
+                ul.appendChild(li);
+            });
+            inscripcion.appendChild(ul);
+            cursoProfesor.clases.forEach(clase => {
+                div = document.createElement('div');
+                div.className = "tab-content mt-3"
+                div.innerHTML = `
+                <div class="tab-pane fade show" id = "clase${clase.id}">
+                    <h5>${clase.nombre}</h5>
+                    <p>${clase.descripcion}</p>
+                    <a href="${clase.archivo}"><b>Material</b></a>
+                </div>
+                <button id="delete" class="btn btn-danger w-30" onclick="deleteclase(${clase.id})">Eliminar Clase</button>
+                `;
+                inscripcion.appendChild(div);
+            });
+
+        }
     }
 }
 
 function showCursos(courses) {
-    let todosCursos = document.getElementById('todosCursos');
+    let todosCursos = document.getElementById('curso-detalle');
     todosCursos.innerHTML = '';
     courses.forEach(course => {
         const col = document.createElement('div');
@@ -251,11 +320,24 @@ function showCursos(courses) {
                 maecenas luctus purus scelerisque feugiat. Malesuada faucibus fusce sociis class nostra dignissim leo
                 facilisis posuere fames, ac semper potenti fringilla turpis elementum vitae gravida aenean, risus justo
                 purus erat eget integer suscipit lacinia mollis.</p>
-              <a href="../../cursos/curso.html?id=${course.id}&from=alumno" class="btn btn-outline-primary mt-2">Ver curso</a>
+              <a href="../../cursos/curso.html?id=${course.id}&from=index" class="btn btn-outline-primary mt-2">Ver curso</a>
             </div>
           </div>
         </div>
         `;
         todosCursos.appendChild(col);
     });
+}
+
+function clasevista(idcurso, idclase) {
+    courses[ idcurso ].clases[ idclase ].vista = true;
+}
+function editCurso(idcurso) {
+    //ver que se ingresa en los inputs y guardarlo
+}
+function deleteCurso(idcursor){}
+function addClase(idcurso) {
+}
+function deleteclase(idclase) {
+
 }
