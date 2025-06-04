@@ -37,7 +37,7 @@ function adaptnavbar(from) {
         navbar.className = "navbar navbar-expand-lg sticky-top navbar-brand fixed-top align-items-center bg-body-tertiary";
         navbar.innerHTML = `
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="../index.html">
                 <img src="../resources/icon.png" alt="Logo" width="35" height="30"
                         class="d-inline-block align-text-top">
                     Aprendix
@@ -71,7 +71,7 @@ function adaptnavbar(from) {
         navbar.className = "navbar navbar-expand-lg sticky-top navbar-brand fixed-top align-items-center bg-body-tertiary";
         navbar.innerHTML = `
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="../profesor/dashboard/dashboard#scrollInicio">
                     <img src="../resources/icon-alt.png" alt="Logo" width="35" height="30" class="d-inline-block align-text-top">
                     Aprendix | Profesor
                 </a>
@@ -79,13 +79,13 @@ function adaptnavbar(from) {
                     <div class="navbarNav">
                         <ul class="nav navbar-nav justify-content-end">
                             <li class="nav-item">
-                                <a id="linkTodosCursos" class="nav-link" aria-current="page" href="#scrollInicio">Inicio</a>
+                                <a id="linkTodosCursos" class="nav-link" aria-current="page" href="../profesor/dashboard/dashboard#scrollInicio">Inicio</a>
                             </li>
                             <li class="nav-item">
-                                <a id="linkMisCursos" class="nav-link" href="#">Mis cursos</a>
+                                <a id="linkMisCursos" class="nav-link" href="../profesor/dashboard/dashboard#scrollMisCursos">Mis cursos</a>
                             </li>
                             <li class="nav-item">
-                                <a id="editProfile" class="nav-link" title="Editar Perfil" href="../perfil/perfil.html">Hola, <span id="userName"></span></a>
+                                <a id="editProfile" class="nav-link" title="Editar Perfil" href="../profesor/perfil/perfil.html">Hola, <span id="userName"></span></a>
                             </li>
                         </ul>
                     </div>

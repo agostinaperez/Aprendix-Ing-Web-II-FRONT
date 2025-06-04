@@ -1,0 +1,44 @@
+.hero {
+    /* background: linear-gradient(90deg, #f0f4ff 50%, white 50%); */
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: -250px;
+    width: 1050px;
+    height: 1050px;
+    background: #49BBBD;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 1;
+}
+#acciones {
+    background-color: #d6e7fa;
+}
+
+.card {
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    padding: 30px;
+    margin: 15px;
+}
+
+.card-title {
+    font-weight: 500;
+    font-size: larger;
+}
+#panel{
+  background-color: #7FCECF;
+}
+.btn-primary {
+  font-size: x-large;
+  font-weight: bold;
+}

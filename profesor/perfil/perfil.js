@@ -6,3 +6,8 @@ window.addEventListener("DOMContentLoaded", () => {
     userNombre.textContent = user.nombre;
   }
 });
+
+function logout() {
+  sessionStorage.removeItem('user');
+  window.location.href = '../../login/login.html';
+}
