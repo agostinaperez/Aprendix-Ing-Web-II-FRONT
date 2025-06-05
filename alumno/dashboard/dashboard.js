@@ -6,7 +6,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     userNombre.textContent = user.nombre;
     document.getElementById('editProfile').href='../perfil/perfil.html?from=alumno&id=${user.id}';
     getAllCursos();
-    //getMisCursos(user.id);
   }
 });
 
@@ -17,12 +16,11 @@ async function getAllCursos() {
     });
 
     const data = await res.json();
-    alert(data);
     if (!res.ok) {
       alert(data.error || "Error al obtener los cursos");
     } else {
       console.log(data);
-      sessionStorage.setItem('cursos', data);
+      sessionStorage.setItem('cursos', JSON.stringify(data));
       showCursos(data);
 
     }
@@ -33,10 +31,10 @@ async function getAllCursos() {
 
 }
 
-async function getMisCursos(alumnoId) { //todavía no funciona pq tengo q hacer inscripciones primero
+async function getMisCursos(alumnoId) { 
   try {
     const res = await fetch(`http://localhost:3000/curso/alumno/${alumnoId}`, {
-      method: 'POST',
+      method: 'GET',
     });
 
     const data = await res.json();
@@ -44,8 +42,8 @@ async function getMisCursos(alumnoId) { //todavía no funciona pq tengo q hacer 
       alert(data.error || "Error al obtener los cursos");
     } else {
       console.log(data);
-      coursesAlumno = data;
-      showCursosbyAlumnotitulo(coursesAlumno);
+      sessionStorage.setItem('misCursos', JSON.stringify(data));
+      showCursos(data);
     }
   } catch (error) {
     console.error("Error al traer los cursos:", error);
@@ -132,34 +130,24 @@ searchInput.addEventListener('input', () => {
   });
 });
 
-function showCursosbyAlumnotitulo(cursos) {
-  let cursosAlumno = document.getElementById('cursosAlumno');
-  cursos.forEach(curso => {
-    const li = document.createElement('li');
-    li.className = 'nav-item';
-    li.innerHTML = `
-    <a href="../../cursos/curso.html?id=${curso.id}&from=alumno" class="nav-link" style="--bs-nav-link-color: #333; --bs-nav-link-hover-color: #333">
-    ${curso.titulo}
-    </a>`;
-    cursosAlumno.appendChild(li);
-  })
-}
 
-// Interceptar clic en "Mis cursos"
+
+// Mostrar mis cursos
 document.getElementById('linkMisCursos')?.addEventListener('click', (e) => {
   e.preventDefault();
-  localStorage.setItem('selectedCourses', 'alumno'); //esto no esta guardando bien
-  showCursos(coursesAlumno);// Guardar selección
+ const storedUser = sessionStorage.getItem('user') || localStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  getMisCursos(user.id);
   document.getElementById('buscarCursos').innerHTML= 'Buscar Mis Cursos';
   document.getElementById('searchInput').placeholder = "¿Qué deseas seguir aprendiendo?";
-  cursos=coursesAlumno;
 });
 
-// Si quieres que haya un botón para volver a ver todos los cursos:
+//Para volver al inicio
 document.getElementById('linkTodosCursos')?.addEventListener('click', (e) => {
   e.preventDefault();
-  localStorage.setItem('selectedCourses', 'todos');
-  const allCursos = sessionStorage.getItem('cursos', data);
+  const allCursos = JSON.parse(sessionStorage.getItem('cursos'));
+  console.log("entre al inicio:");
+  console.log(allCursos);
   showCursos(allCursos);
   document.getElementById('buscarCursos').innerHTML= 'Buscar Cursos';
   document.getElementById('searchInput').placeholder = "¿Qué deseas aprender?";

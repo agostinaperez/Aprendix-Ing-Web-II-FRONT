@@ -1,5 +1,5 @@
 
-const courses = [
+/*const courses = [
     { id: 0, title: 'Desarrollo Web', description: 'Aprende HTML, CSS, JavaScript y más.', img: "../resources/cursoWeb.png" },
     { id: 1, title: 'Diseño UX/UI', description: 'Crea experiencias digitales efectivas.', img: "../resources/cursoUXUI.png" },
     { id: 2, title: 'Marketing Digital', description: 'Domina estrategias de marketing online.', img: "../resources/cursoMarketing.png" },
@@ -19,14 +19,22 @@ const coursesAlumno = [
     },
     { id: 1, title: 'Diseño UX/UI', description: 'Crea experiencias digitales efectivas.', img: "../../resources/cursoUXUI.png" },
     { id: 7, title: 'Python para Ciencia de Datos', description: 'Analiza datos y crea modelos predictivos con Python.', img: "../../resources/cursoData.jpg" }
-];
+];*/
 
 document.addEventListener("DOMContentLoaded", () => {
+     const storedUser = sessionStorage.getItem('user') || localStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  const userNombre = document.getElementById('userName');
+  if (user) {
+    userNombre.textContent = user.nombre;
+    document.getElementById('editProfile').href='../perfil/perfil.html?from=alumno&id=${user.id}';
+    getAllCursos();
     const params = new URLSearchParams(window.location.search);
     const from = params.get("from");
     adaptnavbar(from);
     const cursoId = parseInt(params.get("id"));
     printcurso(cursoId, from);
+  }
 
 })
 
