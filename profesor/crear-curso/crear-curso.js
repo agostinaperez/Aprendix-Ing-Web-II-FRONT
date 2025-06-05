@@ -1,8 +1,8 @@
 window.addEventListener("DOMContentLoaded", () => {
-  const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+  const storedUser = sessionStorage.getItem('user') || localStorage.getItem('user');
   const user = storedUser ? JSON.parse(storedUser) : null;
   const userNombre = document.getElementById('userName');
-  if (userNombre) {
+  if (user) {
     userNombre.textContent = user.nombre;
   }
 });
@@ -10,7 +10,7 @@ window.addEventListener("DOMContentLoaded", () => {
 document.getElementById('cursoForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const formData = new FormData(e.target);
-  const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+  const storedUser =  sessionStorage.getItem('user') || localStorage.getItem('user');
   const user = storedUser ? JSON.parse(storedUser) : null;
   formData.append("profesorId", user.id); 
 
@@ -26,7 +26,7 @@ document.getElementById('cursoForm').addEventListener('submit', async (e) => {
     } else {
       alert("Curso creado con éxito!");
       console.log(data);
-      window.location.href = "../panel-control/panel-control.html";
+      window.location.href = "../dashboard/dashboard.html";
     }
   } catch (error) {
     console.error("Error al enviar el formulario:", error);

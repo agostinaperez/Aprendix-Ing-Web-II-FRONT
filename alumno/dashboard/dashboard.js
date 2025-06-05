@@ -1,29 +1,58 @@
-window.addEventListener("DOMContentLoaded", () => {
-  const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+window.addEventListener("DOMContentLoaded", async () => {
+  const storedUser = sessionStorage.getItem('user') || localStorage.getItem('user');
   const user = storedUser ? JSON.parse(storedUser) : null;
   const userNombre = document.getElementById('userName');
-  if (userNombre) {
+  if (user) {
     userNombre.textContent = user.nombre;
     document.getElementById('editProfile').href='../perfil/perfil.html?from=alumno&id=${user.id}';
+    getAllCursos();
+    //getMisCursos(user.id);
   }
 });
 
-const coursesAlumno = [
-  {id:0, title: 'AAAAAAAHHHHHHHH', description: 'Aprende HTML, CSS, JavaScript y más.', img: "../../resources/cursoWeb.png" },
-  {id:1, title: 'Diseño UX/UI', description: 'Crea experiencias digitales efectivas.', img: "../../resources/cursoUXUI.png" },
-  {id:2, title: 'Python para Ciencia de Datos', description: 'Analiza datos y crea modelos predictivos con Python.', img: "../../resources/cursoData.jpg" }
-];
+async function getAllCursos() {
+  try {
+    const res = await fetch("http://localhost:3000/curso/all", {
+      method: 'GET',
+    });
 
-const coursesTodos = [
-  {id:0, title: 'Desarrollo Web', description: 'Aprende HTML, CSS, JavaScript y más.', img: "../../resources/cursoWeb.png" },
-  {id:1, title: 'Diseño UX/UI', description: 'Crea experiencias digitales efectivas.', img: "../../resources/cursoUXUI.png" },
-  {id:2, title: 'Marketing Digital', description: 'Domina estrategias de marketing online.', img: "../../resources/cursoMarketing.png" },
-  {id:3, title: 'Python para Principiantes', description: 'Aprende desde cero practicando.', img: "../../resources/cursoPython.png" },
-  {id:4, title: 'Gestión de Proyectos', description: 'Planifica y lidera proyectos con éxito.', img: "../../resources/cursoGestProy.png" },
-  {id:5, title: 'Introducción a JavaScript', description: 'Aprende los fundamentos de JavaScript desde cero.', img: "../../resources/cursoJava.jpg" },
-  {id:6, title: 'React Avanzado', description: 'Domina React y crea aplicaciones web modernas.', img: "../../resources/cursoReact.jpg" },
-  {id:7, title: 'Python para Ciencia de Datos', description: 'Analiza datos y crea modelos predictivos con Python.', img: "../../resources/cursoData.jpg" }
-];
+    const data = await res.json();
+    alert(data);
+    if (!res.ok) {
+      alert(data.error || "Error al obtener los cursos");
+    } else {
+      console.log(data);
+      sessionStorage.setItem('cursos', data);
+      showCursos(data);
+
+    }
+  } catch (error) {
+    console.error("Error al traer los cursos:", error);
+    alert("Ocurrió un error al traer los cursos.");
+  }
+
+}
+
+async function getMisCursos(alumnoId) { //todavía no funciona pq tengo q hacer inscripciones primero
+  try {
+    const res = await fetch(`http://localhost:3000/curso/alumno/${alumnoId}`, {
+      method: 'POST',
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Error al obtener los cursos");
+    } else {
+      console.log(data);
+      coursesAlumno = data;
+      showCursosbyAlumnotitulo(coursesAlumno);
+    }
+  } catch (error) {
+    console.error("Error al traer los cursos:", error);
+    alert("Ocurrió un error al traer los cursos.");
+  }
+
+}
 
 let cursos = [];
 
@@ -31,32 +60,27 @@ const searchInput = document.getElementById('searchInput');
 const resultsContainer = document.getElementById('resultsContainer');
 const todosCursosContainer = document.getElementById('todosCursos');
 
-document.addEventListener("DOMContentLoaded", () => {
-  showCursos(coursesTodos);
-  showCursosbyAlumnoTitle(coursesAlumno);
-});
-
-function showCursos(courses) {
+function showCursos(cursos) {
   let todosCursos = document.getElementById('todosCursos');
   todosCursos.innerHTML = '';
-  courses.forEach(course => {
+  cursos.forEach(curso => {
     const col = document.createElement('div');
     col.className = 'card';
     col.innerHTML = `
         <div class="row justify-content-start">
           <div class="col-3">
-            <img src=${course.img} class="card-img" alt="Curso">
+            <img src="http://localhost:3000${curso.imagen}" class="card-imagen" alt="Curso">
           </div>
           <div class="col-8">
             <div class="card-body">
-              <h5 class="card-title">${course.title}</h5>
-              <p class="card-text text-muted"> <b>${course.description}</b> Lorem ipsum dolor sit amet
+              <h5 class="card-titulo">${curso.titulo}</h5>
+              <p class="card-text text-muted"> <b>${curso.descripcion}</b> Lorem ipsum dolor sit amet
                 consectetur adipiscing, elit fames eros sapien congue aenean, ridiculus nec phasellus lacus etiam.
                 Torquent fames suspendisse massa ac fermentum sodales, tristique integer nulla pharetra augue at aenean,
                 maecenas luctus purus scelerisque feugiat. Malesuada faucibus fusce sociis class nostra dignissim leo
                 facilisis posuere fames, ac semper potenti fringilla turpis elementum vitae gravida aenean, risus justo
                 purus erat eget integer suscipit lacinia mollis.</p>
-              <a href="../../cursos/curso.html?id=${course.id}&from=alumno" class="btn btn-outline-primary mt-2">Ver curso</a>
+              <a href="../../cursos/curso.html?id=${curso.id}&from=alumno" class="btn btn-outline-primary mt-2">Ver curso</a>
             </div>
           </div>
         </div>
@@ -70,31 +94,31 @@ searchInput.addEventListener('input', () => {
   resultsContainer.innerHTML = '<p class="text-muted text-center">Resultados de busqueda:</p>';
   todosCursosContainer.innerHTML='';
 
-  const filteredCourses = cursos.filter(course => course.title.toLowerCase().includes(query));
+  const filteredCourses = cursos.filter(curso => curso.titulo.toLowerCase().includes(query));
 
   if (filteredCourses.length === 0) {
     resultsContainer.innerHTML = '<p class="text-center text-muted" style="padding-bottom: 40px;">No se encontraron resultados.</p>';
     return;
   }
 
-  filteredCourses.forEach(course => {
+  filteredCourses.forEach(curso => {
     const col = document.createElement('div');
     col.className = 'card';
     col.innerHTML = `
         <div class="row justify-content-start">
           <div class="col-3">
-            <img src=${course.img} class="card-img" alt="Curso">
+            <imagen src=http://localhost:3000${curso.imagen} class="card-imagen" alt="Curso">
           </div>
           <div class="col-8">
             <div class="card-body">
-              <h5 class="card-title">${course.title}</h5>
-              <p class="card-text text-muted"> <b>${course.description}</b> Lorem ipsum dolor sit amet
+              <h5 class="card-titulo">${curso.titulo}</h5>
+              <p class="card-text text-muted"> <b>${curso.descripcion}</b> Lorem ipsum dolor sit amet
                 consectetur adipiscing, elit fames eros sapien congue aenean, ridiculus nec phasellus lacus etiam.
                 Torquent fames suspendisse massa ac fermentum sodales, tristique integer nulla pharetra augue at aenean,
                 maecenas luctus purus scelerisque feugiat. Malesuada faucibus fusce sociis class nostra dignissim leo
                 facilisis posuere fames, ac semper potenti fringilla turpis elementum vitae gravida aenean, risus justo
                 purus erat eget integer suscipit lacinia mollis.</p>
-              <a href="../../cursos/curso.html?id=${course.id}&from=alumno" class="btn btn-outline-primary mt-2">Ver curso</a>
+              <a href="../../cursos/curso.html?id=${curso.id}&from=alumno" class="btn btn-outline-primary mt-2">Ver curso</a>
             </div>
           </div>
         </div>
@@ -103,14 +127,14 @@ searchInput.addEventListener('input', () => {
   });
 });
 
-function showCursosbyAlumnoTitle(courses) {
+function showCursosbyAlumnotitulo(cursos) {
   let cursosAlumno = document.getElementById('cursosAlumno');
-  courses.forEach(course => {
+  cursos.forEach(curso => {
     const li = document.createElement('li');
     li.className = 'nav-item';
     li.innerHTML = `
-    <a href="../../cursos/curso.html?id=${course.id}&from=alumno" class="nav-link" style="--bs-nav-link-color: #333; --bs-nav-link-hover-color: #333">
-    ${course.title}
+    <a href="../../cursos/curso.html?id=${curso.id}&from=alumno" class="nav-link" style="--bs-nav-link-color: #333; --bs-nav-link-hover-color: #333">
+    ${curso.titulo}
     </a>`;
     cursosAlumno.appendChild(li);
   })
@@ -130,8 +154,25 @@ document.getElementById('linkMisCursos')?.addEventListener('click', (e) => {
 document.getElementById('linkTodosCursos')?.addEventListener('click', (e) => {
   e.preventDefault();
   localStorage.setItem('selectedCourses', 'todos');
-  showCursos(courses);
+  const allCursos = sessionStorage.getItem('cursos', data);
+  showCursos(allCursos);
   document.getElementById('buscarCursos').innerHTML= 'Buscar Cursos';
   document.getElementById('searchInput').placeholder = "¿Qué deseas aprender?";
-  cursos=coursesTodos;
 });
+
+/*const coursesAlumno = [
+  {id:0, titulo: 'AAAAAAAHHHHHHHH', descripcion: 'Aprende HTML, CSS, JavaScript y más.', imagen: "../../resources/cursoWeb.png" },
+  {id:1, titulo: 'Diseño UX/UI', descripcion: 'Crea experiencias digitales efectivas.', imagen: "../../resources/cursoUXUI.png" },
+  {id:2, titulo: 'Python para Ciencia de Datos', descripcion: 'Analiza datos y crea modelos predictivos con Python.', imagen: "../../resources/cursoData.jpg" }
+];
+
+const coursesTodos = [
+  {id:0, titulo: 'Desarrollo Web', descripcion: 'Aprende HTML, CSS, JavaScript y más.', imagen: "../../resources/cursoWeb.png" },
+  {id:1, titulo: 'Diseño UX/UI', descripcion: 'Crea experiencias digitales efectivas.', imagen: "../../resources/cursoUXUI.png" },
+  {id:2, titulo: 'Marketing Digital', descripcion: 'Domina estrategias de marketing online.', imagen: "../../resources/cursoMarketing.png" },
+  {id:3, titulo: 'Python para Principiantes', descripcion: 'Aprende desde cero practicando.', imagen: "../../resources/cursoPython.png" },
+  {id:4, titulo: 'Gestión de Proyectos', descripcion: 'Planifica y lidera proyectos con éxito.', imagen: "../../resources/cursoGestProy.png" },
+  {id:5, titulo: 'Introducción a JavaScript', descripcion: 'Aprende los fundamentos de JavaScript desde cero.', imagen: "../../resources/cursoJava.jpg" },
+  {id:6, titulo: 'React Avanzado', descripcion: 'Domina React y crea aplicaciones web modernas.', imagen: "../../resources/cursoReact.jpg" },
+  {id:7, titulo: 'Python para Ciencia de Datos', descripcion: 'Analiza datos y crea modelos predictivos con Python.', imagen: "../../resources/cursoData.jpg" }
+];*/

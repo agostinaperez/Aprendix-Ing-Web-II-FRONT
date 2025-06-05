@@ -1,8 +1,8 @@
 window.addEventListener("DOMContentLoaded", () => {
-  const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+  const storedUser = sessionStorage.getItem('user') || localStorage.getItem('user');
   const user = storedUser ? JSON.parse(storedUser) : null;
   const userNombre = document.getElementById('userName');
-  if (userNombre) {
+  if (user) {
     userNombre.textContent = user.nombre;
     document.getElementById('editProfile').href='../perfil/perfil.html?from=alumno&id=${user.id}';
   }

@@ -10,8 +10,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const user = storedUser ? JSON.parse(storedUser) : null;
   if (user) {
     const email = document.getElementById('loginEmail');
-    
     email.value = user.email;
+    remember.checked = true;
   }
 });
 
@@ -94,7 +94,7 @@ async function auth(event, isRegistro) {
         if (user.rol === "ALUMNO") {
           window.location.href = '../alumno/dashboard/dashboard.html';
         } else if (user.rol === "PROFESOR") {
-          window.location.href = '../profesor/panel-control/panel-control.html';
+          window.location.href = '../profesor/dashboard/dashboard.html';
         }
       }
     }
