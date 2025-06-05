@@ -1,5 +1,4 @@
 
-
 const courses = [
     { id: 0, title: 'Desarrollo Web', description: 'Aprende HTML, CSS, JavaScript y más.', img: "../resources/cursoWeb.png" },
     { id: 1, title: 'Diseño UX/UI', description: 'Crea experiencias digitales efectivas.', img: "../resources/cursoUXUI.png" },
@@ -138,7 +137,8 @@ function printcurso(id, from) {
                     Torquent fames suspendisse massa ac fermentum sodales, tristique integer nulla pharetra augue at aenean,
                     maecenas luctus purus scelerisque feugiat. Malesuada faucibus fusce sociis class nostra dignissim leo
                     facilisis posuere fames, ac semper potenti fringilla turpis elementum vitae gravida aenean, risus justo
-                    purus erat eget integer suscipit lacinia mollis.</p>
+                    purus erat eget integer suscipit lacinia mollis.</p><br>
+                                    <p class="text-muted"><b>Profesor: curso.profesor.nombre</b></p>
                                     <div id="inscripcion">
                                         
                                     </div>
@@ -150,12 +150,15 @@ function printcurso(id, from) {
 
     }
 }
-
+function logout() {
+  sessionStorage.removeItem('user');
+  window.location.href = '../../login/login.html';
+}
 
 function inscripcion(id, from) {
     inscripcion = document.getElementById('inscripcion');
     if (from === "alumno") {
-        cursoAlumno = coursesAlumno.find(c => c.id === id);
+        const cursoAlumno = coursesAlumno.find(c => c.id === id);
         if (!cursoAlumno) {//alumno no inscripto
             inscripcion.innerHTML = `<button class="btn btn-primary w-60 mb-3" onclick="inscribirAlumno()">Inscribirse</button>`;
         } else {
@@ -190,7 +193,7 @@ function inscripcion(id, from) {
     } else if (from === "index") {
         inscripcion.innerHTML = '<a href="../login/login.html" class="btn btn-primary w-60 mb-3">Comienza ahora</a>';
     } else if (from === "profesor") {
-        cursoProfesor = courseProfesor.find(c => c.id === id);
+        const cursoProfesor = coursesAlumno.find(c => c.id === id);
         if (!cursoProfesor) {//profesor no asignado a ese curso
             inscripcion.innerHTML = '<p class="text-muted text-center" style="margin: 300px 0px 300px 0px;">No se encontro el curso.</p>';
         } else {
@@ -286,12 +289,12 @@ function inscripcion(id, from) {
                 div = document.createElement('div');
                 div.className = "tab-content mt-3"
                 div.innerHTML = `
-                <div class="tab-pane fade show" id = "clase${clase.id}">
+                <div class="tab-pane fade" id = "clase${clase.id}">
                     <h5>${clase.nombre}</h5>
                     <p>${clase.descripcion}</p>
-                    <a href="${clase.archivo}"><b>Material</b></a>
+                    <a href="${clase.archivo}"><b>Material</b></a><br>
+                    <button id="delete" class="btn btn-danger w-30" onclick="deleteclase(${clase.id})">Eliminar Clase</button>
                 </div>
-                <button id="delete" class="btn btn-danger w-30" onclick="deleteclase(${clase.id})">Eliminar Clase</button>
                 `;
                 inscripcion.appendChild(div);
             });

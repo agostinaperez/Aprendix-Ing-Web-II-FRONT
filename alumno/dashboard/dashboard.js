@@ -54,6 +54,11 @@ async function getMisCursos(alumnoId) { //todavía no funciona pq tengo q hacer 
 
 }
 
+function logout() {
+  sessionStorage.removeItem('user');
+  window.location.href = '../../login/login.html';
+}
+
 let cursos = [];
 
 const searchInput = document.getElementById('searchInput');
