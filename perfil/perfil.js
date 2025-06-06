@@ -13,7 +13,7 @@ window.addEventListener("DOMContentLoaded", () => {
     registerUsername.value = user.usuario;
 
     if (user.rol === "PROFESOR") {
-      document.getElementById("linkTodosCursos").href = "../profesor/dashboard/dashboard.html";
+      document.getElementById("linkTodosCursos").href="../profesor/dashboard/dashboard.html#scrollInicio"
     }
   }
 });
