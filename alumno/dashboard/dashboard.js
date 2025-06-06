@@ -4,8 +4,9 @@ window.addEventListener("DOMContentLoaded", async () => {
   const userNombre = document.getElementById('userName');
   if (user) {
     userNombre.textContent = user.nombre;
-    document.getElementById('editProfile').href='../perfil/perfil.html?from=alumno&id=${user.id}';
+    document.getElementById('editProfile').href='../../perfil/perfil.html?from=alumno&id=${user.id}';
     getAllCursos();
+    getMisCursos(user.id);
   }
 });
 
@@ -33,17 +34,25 @@ async function getAllCursos() {
 
 async function getMisCursos(alumnoId) { 
   try {
+    alert(alumnoId);
     const res = await fetch(`http://localhost:3000/curso/alumno/${alumnoId}`, {
       method: 'GET',
     });
-
+    
     const data = await res.json();
     if (!res.ok) {
       alert(data.error || "Error al obtener los cursos");
     } else {
       console.log(data);
-      sessionStorage.setItem('misCursos', JSON.stringify(data));
-      showCursos(data);
+      alert(data.length);
+      if (data.length > 0) {
+        sessionStorage.setItem('misCursos', JSON.stringify(data));
+        showCursos(data);
+        showMisCursosSidebar()
+      } else {
+        alert("Lo sentimos, aún no estás inscrito a ningún curso!");
+      }
+      
     }
   } catch (error) {
     console.error("Error al traer los cursos:", error);
@@ -52,9 +61,28 @@ async function getMisCursos(alumnoId) {
 
 }
 
+function showMisCursosSidebar() {
+  const misCursos = JSON.parse(sessionStorage.getItem("misCursos"));
+  let cursosAlumno = document.getElementById("cursosAlumno");
+  if (misCursos) {
+    misCursos.forEach((curso) => {
+    const li = document.createElement("li");
+    li.className = "nav-item";
+    li.innerHTML = `
+        <a href="../../cursos/curso.html?id=${curso.id}&from=alumno" class="nav-link" style="--bs-nav-link-color: #333; --bs-nav-link-hover-color: #333">
+        ${curso.titulo}
+        </a>`;
+    cursosAlumno.appendChild(li);
+  });
+  }
+}
+
 function logout() {
   sessionStorage.removeItem('user');
-  window.location.href = '../../login/login.html';
+  sessionStorage.removeItem('misCursos');
+  sessionStorage.removeItem('cursos');
+
+  window.location.href = "../../login/login.html";
 }
 
 let cursos = [];
@@ -97,14 +125,14 @@ searchInput.addEventListener('input', () => {
   resultsContainer.innerHTML = '<p class="text-muted text-center">Resultados de busqueda:</p>';
   todosCursosContainer.innerHTML='';
 
-  const filteredCourses = cursos.filter(curso => curso.titulo.toLowerCase().includes(query));
+  const filteredCursos = cursos.filter(curso => curso.titulo.toLowerCase().includes(query));
 
-  if (filteredCourses.length === 0) {
+  if (filteredCursos.length === 0) {
     resultsContainer.innerHTML = '<p class="text-center text-muted" style="padding-bottom: 40px;">No se encontraron resultados.</p>';
     return;
   }
 
-  filteredCourses.forEach(curso => {
+  filteredCursos.forEach(curso => {
     const col = document.createElement('div');
     col.className = 'card';
     col.innerHTML = `
@@ -131,13 +159,11 @@ searchInput.addEventListener('input', () => {
 });
 
 
-
 // Mostrar mis cursos
 document.getElementById('linkMisCursos')?.addEventListener('click', (e) => {
   e.preventDefault();
- const storedUser = sessionStorage.getItem('user') || localStorage.getItem('user');
-  const user = storedUser ? JSON.parse(storedUser) : null;
-  getMisCursos(user.id);
+  const misCursos = JSON.parse(sessionStorage.getItem("misCursos"));
+  showCursos(misCursos);
   document.getElementById('buscarCursos').innerHTML= 'Buscar Mis Cursos';
   document.getElementById('searchInput').placeholder = "¿Qué deseas seguir aprendiendo?";
 });
@@ -146,14 +172,12 @@ document.getElementById('linkMisCursos')?.addEventListener('click', (e) => {
 document.getElementById('linkTodosCursos')?.addEventListener('click', (e) => {
   e.preventDefault();
   const allCursos = JSON.parse(sessionStorage.getItem('cursos'));
-  console.log("entre al inicio:");
-  console.log(allCursos);
   showCursos(allCursos);
   document.getElementById('buscarCursos').innerHTML= 'Buscar Cursos';
   document.getElementById('searchInput').placeholder = "¿Qué deseas aprender?";
 });
 
-/*const coursesAlumno = [
+/*const misCursos = [
   {id:0, titulo: 'AAAAAAAHHHHHHHH', descripcion: 'Aprende HTML, CSS, JavaScript y más.', imagen: "../../resources/cursoWeb.png" },
   {id:1, titulo: 'Diseño UX/UI', descripcion: 'Crea experiencias digitales efectivas.', imagen: "../../resources/cursoUXUI.png" },
   {id:2, titulo: 'Python para Ciencia de Datos', descripcion: 'Analiza datos y crea modelos predictivos con Python.', imagen: "../../resources/cursoData.jpg" }

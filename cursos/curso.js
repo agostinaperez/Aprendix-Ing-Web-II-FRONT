@@ -1,5 +1,4 @@
-
-/*const courses = [
+/*const cursos = [
     { id: 0, title: 'Desarrollo Web', description: 'Aprende HTML, CSS, JavaScript y más.', img: "../resources/cursoWeb.png" },
     { id: 1, title: 'Diseño UX/UI', description: 'Crea experiencias digitales efectivas.', img: "../resources/cursoUXUI.png" },
     { id: 2, title: 'Marketing Digital', description: 'Domina estrategias de marketing online.', img: "../resources/cursoMarketing.png" },
@@ -9,7 +8,7 @@
     { id: 6, title: 'React Avanzado', description: 'Domina React y crea aplicaciones web modernas.', img: "../resources/cursoReact.jpg" },
     { id: 7, title: 'Python para Ciencia de Datos', description: 'Analiza datos y crea modelos predictivos con Python.', img: "../resources/cursoData.jpg" }
 ];
-const coursesAlumno = [
+const misCursos = [
     {
         id: 0, title: 'Desarrollo Web', description: 'Aprende HTML, CSS, JavaScript y más.', img: "../../resources/cursoWeb.png",
         clases: [
@@ -22,27 +21,26 @@ const coursesAlumno = [
 ];*/
 
 document.addEventListener("DOMContentLoaded", () => {
-     const storedUser = sessionStorage.getItem('user') || localStorage.getItem('user');
+  const storedUser = sessionStorage.getItem("user") || localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
-  const userNombre = document.getElementById('userName');
+  const userNombre = document.getElementById("userName");
   if (user) {
     userNombre.textContent = user.nombre;
-    document.getElementById('editProfile').href='../perfil/perfil.html?from=alumno&id=${user.id}';
-    getAllCursos();
+    document.getElementById("editProfile").href = "../../perfil/perfil.html?from=alumno&id=${user.id}";
     const params = new URLSearchParams(window.location.search);
     const from = params.get("from");
     adaptnavbar(from);
     const cursoId = parseInt(params.get("id"));
     printcurso(cursoId, from);
   }
-
-})
+});
 
 function adaptnavbar(from) {
-    let navbar = document.getElementById("navbar");
-    if (from === "index") {
-        navbar.className = "navbar navbar-expand-lg sticky-top navbar-brand fixed-top align-items-center bg-body-tertiary";
-        navbar.innerHTML = `
+  let navbar = document.getElementById("navbar");
+  if (from === "index") {
+    navbar.className =
+      "navbar navbar-expand-lg sticky-top navbar-brand fixed-top align-items-center bg-body-tertiary";
+    navbar.innerHTML = `
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html">
                 <img src="../resources/icon.png" alt="Logo" width="35" height="30"
@@ -69,14 +67,16 @@ function adaptnavbar(from) {
                     </div>
                 </div>
             </div>`;
-        document.getElementById("offcanvasMenu").innerHTML = '';
-        document.getElementById("offcanvasMenu").remove();
-    } else if (from === "alumno") {
-        showCursosbyAlumnoTitle(coursesAlumno);
-    } else if (from === "profesor") { //profesor
-        document.getElementById("icon").href = "../resources/icon-alt.png";
-        navbar.className = "navbar navbar-expand-lg sticky-top navbar-brand fixed-top align-items-center bg-body-tertiary";
-        navbar.innerHTML = `
+    document.getElementById("offcanvasMenu").innerHTML = "";
+    document.getElementById("offcanvasMenu").remove();
+  } else if (from === "alumno") {
+    showMisCursosSidebar();
+  } else if (from === "profesor") {
+    //profesor
+    document.getElementById("icon").href = "../resources/icon-alt.png";
+    navbar.className =
+      "navbar navbar-expand-lg sticky-top navbar-brand fixed-top align-items-center bg-body-tertiary";
+    navbar.innerHTML = `
             <div class="container-fluid">
                 <a class="navbar-brand" href="../profesor/dashboard/dashboard#scrollInicio">
                     <img src="../resources/icon-alt.png" alt="Logo" width="35" height="30" class="d-inline-block align-text-top">
@@ -92,46 +92,52 @@ function adaptnavbar(from) {
                                 <a id="linkMisCursos" class="nav-link" href="../profesor/dashboard/dashboard#scrollMisCursos">Mis cursos</a>
                             </li>
                             <li class="nav-item">
-                                <a id="editProfile" class="nav-link" title="Editar Perfil" href="../profesor/perfil/perfil.html">Hola, <span id="userName"></span></a>
+                                <a id="editProfile" class="nav-link" title="Editar Perfil" href=""../../perfil/perfil.html">Hola, <span id="userName"></span></a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </nav>`;
-        document.getElementById("offcanvasMenu").innerHTML = '';
-        document.getElementById("offcanvasMenu").remove();
-    }
+    document.getElementById("offcanvasMenu").innerHTML = "";
+    document.getElementById("offcanvasMenu").remove();
+  }
 }
 
-function showCursosbyAlumnoTitle(courses) {
-    let cursosAlumno = document.getElementById('cursosAlumno');
-    courses.forEach(course => {
-        const li = document.createElement('li');
-        li.className = 'nav-item';
-        li.innerHTML = `
-        <a href="../../cursos/curso.html?id=${course.id}&from=alumno" class="nav-link" style="--bs-nav-link-color: #333; --bs-nav-link-hover-color: #333">
-        ${course.title}
+function showMisCursosSidebar() {
+  const misCursos = JSON.parse(sessionStorage.getItem("misCursos"));
+  let cursosAlumno = document.getElementById("cursosAlumno");
+  if (misCursos) {
+    misCursos.forEach((curso) => {
+    const li = document.createElement("li");
+    li.className = "nav-item";
+    li.innerHTML = `
+        <a href="../../cursos/curso.html?id=${curso.id}&from=alumno" class="nav-link" style="--bs-nav-link-color: #333; --bs-nav-link-hover-color: #333">
+        ${curso.titulo}
         </a>`;
-        cursosAlumno.appendChild(li);
-    })
+    cursosAlumno.appendChild(li);
+  });
+  }
 }
 
 function printcurso(id, from) {
-    const curso = courses.find(c => c.id === id);
-    let cursodetalle = document.getElementById('curso-detalle');
-    if (!curso) {
-        if (id === parseInt(-1)) { //todos los cursos
-            showCursos(courses);
-        } else {
-            cursodetalle.innerHTML = '<p class="text-muted text-center" style="margin: 300px 0px 300px 0px;">No se encontro el curso.</p>';
-        }
+  const cursos = JSON.parse(sessionStorage.getItem("cursos"));
+  const curso = cursos.find((c) => c.id === id);
+  let cursodetalle = document.getElementById("curso-detalle");
+  if (!curso) {
+    if (id === parseInt(-1)) {
+      //todos los cursos
+      showCursos(cursos);
     } else {
-        //curso individual
-        cursodetalle.innerHTML = `
-                    <div id="banner" class="banner" style="background-image: url('${curso.img}');">
+      cursodetalle.innerHTML =
+        '<p class="text-muted text-center" style="margin: 300px 0px 300px 0px;">No se encontro el curso.</p>';
+    }
+  } else {
+    //curso individual
+    cursodetalle.innerHTML = `
+                    <div id="banner" class="banner" style="background-image: url('http://localhost:3000${curso.imagen}');">
                         <div class="text-center">
-                            <h1 class="fw-bolder">${curso.title}</h1>
+                            <h1 class="fw-bolder">${curso.titulo}</h1>
                         </div>
                     </div>
                     <!-- Main Content -->
@@ -140,13 +146,13 @@ function printcurso(id, from) {
                             <div class="col-lg-8">
                                 <div class="bg-light p-4 rounded">
                                     <h5 class="fw-semibold">Descripción</h5>
-                                    <p class="text-muted"><b>${curso.description}</b>Lorem ipsum dolor sit amet
+                                    <p class="text-muted"><b>${curso.descripcion}</b>Lorem ipsum dolor sit amet
                     consectetur adipiscing, elit fames eros sapien congue aenean, ridiculus nec phasellus lacus etiam.
                     Torquent fames suspendisse massa ac fermentum sodales, tristique integer nulla pharetra augue at aenean,
                     maecenas luctus purus scelerisque feugiat. Malesuada faucibus fusce sociis class nostra dignissim leo
                     facilisis posuere fames, ac semper potenti fringilla turpis elementum vitae gravida aenean, risus justo
                     purus erat eget integer suscipit lacinia mollis.</p><br>
-                                    <p class="text-muted"><b>Profesor: curso.profesor.nombre</b></p>
+                                    <p class="text-muted"><b>Profesor: ${curso.profesor.nombre}</b></p>
                                     <div id="inscripcion">
                                         
                                     </div>
@@ -154,26 +160,59 @@ function printcurso(id, from) {
                             </div>
                         </div>
                         `;
-        inscripcion(id, from);
-
-    }
+    inscripcion(id, from);
+  }
 }
 function logout() {
-  sessionStorage.removeItem('user');
-  window.location.href = '../../login/login.html';
+  sessionStorage.removeItem("user");
+  sessionStorage.removeItem('misCursos');
+  sessionStorage.removeItem('cursos');
+  window.location.href = "../../login/login.html";
+}
+
+async function inscribirAlumno() {
+  const storedUser = sessionStorage.getItem("user") || localStorage.getItem("user");
+  const alumnoId = JSON.parse(storedUser).id;
+  const params = new URLSearchParams(window.location.search);
+  const cursoId = parseInt(params.get("id"));
+  try {
+    const res = await fetch("http://localhost:3000/inscripcion/new", {
+      method: "POST",
+      headers: { "Content-Type": "application/json",
+    },
+      body: JSON.stringify({ alumnoId, cursoId }),
+    });
+
+    const data = await res.json();
+    console.log(data);
+    if (!res.ok) {
+      alert(data.error || "Error al inscribirse");
+    } else {
+      console.log(data);
+      alert("La inscripción se realizó con éxito!")
+      location.reload();
+    }
+  } catch (error) {
+    console.error("Error al inscribirse:", error);
+    alert("Ocurrió un error al inscribirse");
+  }
 }
 
 function inscripcion(id, from) {
-    inscripcion = document.getElementById('inscripcion');
-    if (from === "alumno") {
-        const cursoAlumno = coursesAlumno.find(c => c.id === id);
-        if (!cursoAlumno) {//alumno no inscripto
-            inscripcion.innerHTML = `<button class="btn btn-primary w-60 mb-3" onclick="inscribirAlumno()">Inscribirse</button>`;
-        } else {
-            ul = document.createElement('ul');
-            ul.className = "nav nav-tabs";
-            ul.id = "clasesTabs";
-            cursoAlumno.clases.forEach(clase => {
+  const misCursos = JSON.parse(sessionStorage.getItem("misCursos"));
+
+  inscripcion = document.getElementById("inscripcion");
+  if (from === "alumno") {
+    const cursoAlumno = misCursos? misCursos.find((c) => c.id === id) : null;
+    if (!cursoAlumno) {
+      //alumno no inscripto
+      inscripcion.innerHTML = `<button class="btn btn-primary w-60 mb-3" onclick="inscribirAlumno()">Inscribirse</button>`;
+    } else {
+      ul = document.createElement("ul");
+      ul.className = "nav nav-tabs";
+      ul.id = "clasesTabs";
+      /* if (cursoAlumno.clases.length > 0) {
+                cursoAlumno.clases.forEach(clase => {
                 const li = document.createElement('li');
                 li.className = 'nav-item';
                 li.innerHTML = `
@@ -195,17 +234,20 @@ function inscripcion(id, from) {
                 </div>
                 `;
                 inscripcion.appendChild(div);
-            });
-
-        }
-    } else if (from === "index") {
-        inscripcion.innerHTML = '<a href="../login/login.html" class="btn btn-primary w-60 mb-3">Comienza ahora</a>';
-    } else if (from === "profesor") {
-        const cursoProfesor = coursesAlumno.find(c => c.id === id);
-        if (!cursoProfesor) {//profesor no asignado a ese curso
-            inscripcion.innerHTML = '<p class="text-muted text-center" style="margin: 300px 0px 300px 0px;">No se encontro el curso.</p>';
-        } else {
-            inscripcion.innerHTML = `
+            });*/
+    }
+  } else if (from === "index") {
+    inscripcion.innerHTML =
+      '<a href="../login/login.html" class="btn btn-primary w-60 mb-3">Comienza ahora</a>';
+  } else if (from === "profesor") {
+    //esto no me gusta, no está bien
+    const cursoProfesor = misCursos.find((c) => c.id === id);
+    if (!cursoProfesor) {
+      //profesor no asignado a ese curso
+      inscripcion.innerHTML =
+        '<p class="text-muted text-center" style="margin: 300px 0px 300px 0px;">No se encontro el curso.</p>';
+    } else {
+      inscripcion.innerHTML = `
         <div class="row">
             <button type="button" class="btn btn-primary w-60 mb-3" data-bs-toggle="modal" data-bs-target="#modalEdit">Editar Curso</button>
             <button onclick="addClase(${id})" type="button" class="btn btn-primary w-60 mb-3" data-bs-toggle="modal" data-bs-target="#modalClase">Agregar Clase</button>
@@ -279,24 +321,28 @@ function inscripcion(id, from) {
             </div>
         </div>
     </div>`;
-            ul = document.createElement('ul');
-            ul.className = "nav nav-tabs";
-            ul.id = "clasesTabs";
-            cursoProfesor.clases.forEach(clase => {
-                const li = document.createElement('li');
-                li.className = 'nav-item';
-                li.innerHTML = `
-                    <button class="nav-link btn-tab" data-bs-toggle="tab" data-bs-target="#clase${clase.id}" 
-                    type="button" role="tab" aria-selected="true" onclick="clasevista(${id}, ${clase.id})">
+      ul = document.createElement("ul");
+      ul.className = "nav nav-tabs";
+      ul.id = "clasesTabs";
+      cursoProfesor.clases.forEach((clase) => {
+        const li = document.createElement("li");
+        li.className = "nav-item";
+        li.innerHTML = `
+                    <button class="nav-link btn-tab" data-bs-toggle="tab" data-bs-target="#clase${
+                      clase.id
+                    }" 
+                    type="button" role="tab" aria-selected="true" onclick="clasevista(${id}, ${
+          clase.id
+        })">
                         Clase ${clase.id + 1}
                     </button>`;
-                ul.appendChild(li);
-            });
-            inscripcion.appendChild(ul);
-            cursoProfesor.clases.forEach(clase => {
-                div = document.createElement('div');
-                div.className = "tab-content mt-3"
-                div.innerHTML = `
+        ul.appendChild(li);
+      });
+      inscripcion.appendChild(ul);
+      cursoProfesor.clases.forEach((clase) => {
+        div = document.createElement("div");
+        div.className = "tab-content mt-3";
+        div.innerHTML = `
                 <div class="tab-pane fade" id = "clase${clase.id}">
                     <h5>${clase.nombre}</h5>
                     <p>${clase.descripcion}</p>
@@ -304,51 +350,47 @@ function inscripcion(id, from) {
                     <button id="delete" class="btn btn-danger w-30" onclick="deleteclase(${clase.id})">Eliminar Clase</button>
                 </div>
                 `;
-                inscripcion.appendChild(div);
-            });
-
-        }
+        inscripcion.appendChild(div);
+      });
     }
+  }
 }
 
-function showCursos(courses) {
-    let todosCursos = document.getElementById('curso-detalle');
-    todosCursos.innerHTML = '';
-    courses.forEach(course => {
-        const col = document.createElement('div');
-        col.className = 'card';
-        col.innerHTML = `
+function showCursos(cursos) {
+  let todosCursos = document.getElementById("curso-detalle");
+  todosCursos.innerHTML = "";
+  cursos.forEach((curso) => {
+    const col = document.createElement("div");
+    col.className = "card";
+    col.innerHTML = `
         <div class="row justify-content-start">
           <div class="col-3">
-            <img src=${course.img} class="card-img" alt="Curso">
+            <img src="http://localhost:3000${curso.imagen}" class="card-img" alt="Curso">
           </div>
           <div class="col-8">
             <div class="card-body">
-              <h5 class="card-title">${course.title}</h5>
-              <p class="card-text text-muted"> <b>${course.description}</b> Lorem ipsum dolor sit amet
+              <h5 class="card-title">${curso.titulo}</h5>
+              <p class="card-text text-muted"> <b>${curso.descripcion}</b> Lorem ipsum dolor sit amet
                 consectetur adipiscing, elit fames eros sapien congue aenean, ridiculus nec phasellus lacus etiam.
                 Torquent fames suspendisse massa ac fermentum sodales, tristique integer nulla pharetra augue at aenean,
                 maecenas luctus purus scelerisque feugiat. Malesuada faucibus fusce sociis class nostra dignissim leo
                 facilisis posuere fames, ac semper potenti fringilla turpis elementum vitae gravida aenean, risus justo
                 purus erat eget integer suscipit lacinia mollis.</p>
-              <a href="../../cursos/curso.html?id=${course.id}&from=index" class="btn btn-outline-primary mt-2">Ver curso</a>
+              <a href="../../cursos/curso.html?id=${curso.id}&from=index" class="btn btn-outline-primary mt-2">Ver curso</a>
             </div>
           </div>
         </div>
         `;
-        todosCursos.appendChild(col);
-    });
+    todosCursos.appendChild(col);
+  });
 }
 
 function clasevista(idcurso, idclase) {
-    courses[ idcurso ].clases[ idclase ].vista = true;
+  cursos[idcurso].clases[idclase].vista = true;
 }
 function editCurso(idcurso) {
-    //ver que se ingresa en los inputs y guardarlo
+  //ver que se ingresa en los inputs y guardarlo
 }
-function deleteCurso(idcursor){}
-function addClase(idcurso) {
-}
-function deleteclase(idclase) {
-
-}
+function deleteCurso(idcursor) {}
+function addClase(idcurso) {}
+function deleteclase(idclase) {}

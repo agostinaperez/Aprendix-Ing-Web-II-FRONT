@@ -11,10 +11,20 @@ window.addEventListener("DOMContentLoaded", () => {
     registerEmail.value = user.email;
     registerName.value = user.nombre;
     registerUsername.value = user.usuario;
+
+    if (user.rol === "PROFESOR") {
+      document.getElementById("linkTodosCursos").href = "../profesor/dashboard/dashboard.html";
+    }
   }
 });
 
+function updatePerfil() {
+  
+}
+
 function logout() {
   sessionStorage.removeItem('user');
-  window.location.href = '../../login/login.html';
+  sessionStorage.removeItem('misCursos');
+  sessionStorage.removeItem('cursos');
+  window.location.href = '../login/login.html';
 }

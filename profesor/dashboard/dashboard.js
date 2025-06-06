@@ -4,7 +4,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const userNombre = document.getElementById('userName');
   if (user) {
     userNombre.textContent = user.nombre;
-    document.getElementById('editProfile').href='../perfil/perfil.html?from=alumno&id=${user.id}';
+    document.getElementById('editProfile').href='../../perfil/perfil.html?from=alumno&id=${user.id}';
   }
 });
 
