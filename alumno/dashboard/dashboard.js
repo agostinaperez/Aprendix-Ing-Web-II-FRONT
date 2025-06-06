@@ -34,7 +34,6 @@ async function getAllCursos() {
 
 async function getMisCursos(alumnoId) { 
   try {
-    alert(alumnoId);
     const res = await fetch(`http://localhost:3000/curso/alumno/${alumnoId}`, {
       method: 'GET',
     });
@@ -44,19 +43,14 @@ async function getMisCursos(alumnoId) {
       alert(data.error || "Error al obtener los cursos");
     } else {
       console.log(data);
-      alert(data.length);
       if (data.length > 0) {
         sessionStorage.setItem('misCursos', JSON.stringify(data));
         showCursos(data);
         showMisCursosSidebar()
-      } else {
-        alert("Lo sentimos, aún no estás inscrito a ningún curso!");
-      }
-      
+      } 
     }
   } catch (error) {
     console.error("Error al traer los cursos:", error);
-    alert("Ocurrió un error al traer los cursos.");
   }
 
 }
