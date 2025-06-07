@@ -76,7 +76,7 @@ function logout() {
   sessionStorage.removeItem('misCursos');
   sessionStorage.removeItem('cursos');
 
-  window.location.href = "../../login/login.html";
+  //window.location.href = "../../login/login.html";
 }
 
 let cursos = [];

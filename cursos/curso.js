@@ -67,7 +67,7 @@ function logout() {
   sessionStorage.removeItem("user");
   sessionStorage.removeItem("misCursos");
   sessionStorage.removeItem("cursos");
-  window.location.href = "../../login/login.html";
+  //window.location.href = "../login/login.html"; //checkear si no funciona poniendo directamente el link hacia login
 }
 //alumno
 async function inscribirAlumno() {
@@ -90,7 +90,7 @@ async function inscribirAlumno() {
     } else {
       console.log(data);
       alert("La inscripción se realizó con éxito!");
-
+      location.reload(); //se supone que recarga la pagina TODO CHEQUEAR
       // inscripcion = document.getElementById("inscripcion");
       // inscripcion.innerHTML = "";
       // getClasesAlumno(cursoId);
