@@ -1,6 +1,7 @@
 body {
     font-family: 'Poppins', sans-serif;
     color: #333;
+    background-image: url('../../resources/fondo.png');
 }
 
 .navbar {
@@ -25,6 +26,10 @@ body {
 
 #icon-menu {
     padding-top: 5px;
+}
+
+#buscarCursos{
+    font-size: 50px;
 }
 
 .card {

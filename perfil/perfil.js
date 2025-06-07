@@ -15,6 +15,8 @@ window.addEventListener("DOMContentLoaded", () => {
     if (user.rol === "PROFESOR") {
       document.getElementById("linkTodosCursos").href="../profesor/dashboard/dashboard.html#scrollInicio"
       document.getElementById('navbar-brand').href="../profesor/dashboard/dashboard.html#scrollInicio"
+      document.getElementById('cancelar').href="../profesor/dashboard/dashboard.html";
+      document.getElementById('editProfile').href="../profesor/dashboard/dashboard.html";
     }
   }
 });

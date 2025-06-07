@@ -1,4 +1,4 @@
-import { adaptnavbar, logoutNavbar } from "../navbar/navbar.js";
+import { adaptnavbar, showMisCursosSidebar } from "../navbar/navbar.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const storedUser =
@@ -96,6 +96,8 @@ async function inscribirAlumno() {
     } else {
       console.log(data);
       alert("La inscripción se realizó con éxito!");
+      sessionStorage.setItem('vistaActual', 'misCursos');
+      window.location.href='../alumno/dashboard/dashboard.html';
     }
   } catch (error) {
     console.error("Error al inscribirse:", error);
@@ -109,6 +111,7 @@ boton.addEventListener("click", () => {
   inscripcion = document.getElementById("inscripcion");
   inscripcion.innerHTML = "";
   getClasesAlumno(cursoId);
+  showMisCursosSidebar;
 });
 function inscripcion(id, from) {
   const misCursos = JSON.parse(sessionStorage.getItem("misCursos"));

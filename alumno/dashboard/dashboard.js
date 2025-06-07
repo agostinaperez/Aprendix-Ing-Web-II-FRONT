@@ -94,13 +94,13 @@ function showMisCursosSidebar() {
   }
 }
 
-function logout() {
+document.getElementById('logout').addEventListener('click', ()=> {
   sessionStorage.removeItem('user');
   sessionStorage.removeItem('misCursos');
   sessionStorage.removeItem('cursos');
   sessionStorage.removeItem('vistaActual');
   window.location.href = "../../login/login.html";
-}
+});
 
 let cursos = [];
 
