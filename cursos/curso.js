@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "../../perfil/perfil.html?from=alumno&id=${user.id}";
     const params = new URLSearchParams(window.location.search);
     const from = params.get("from");
-    adaptnavbar(from);
+    adaptnavbar(from, user.nombre);
     const cursoId = parseInt(params.get("id"));
     printcurso(cursoId, from);
     if (user.rol === "ALUMNO") {
@@ -27,13 +27,8 @@ function printcurso(id, from) {
   const curso = cursos.find((c) => c.id === id);
   let cursodetalle = document.getElementById("curso-detalle");
   if (!curso) {
-    if (id === parseInt(-1)) {
-      //todos los cursos
-      showCursos(cursos); //en algún momento se usa esto????
-    } else {
       cursodetalle.innerHTML =
         '<p class="text-muted text-center" style="margin: 300px 0px 300px 0px;">No se encontro el curso.</p>';
-    }
   } else {
     //curso individual
     cursodetalle.innerHTML = `
@@ -65,7 +60,7 @@ function printcurso(id, from) {
   }
 }
 
-logoutBtn = document.getElementById("logout");
+let logoutBtn = document.getElementById("logout");
 logoutBtn.addEventListener("click", logout);
 
 function logout() {
@@ -95,9 +90,10 @@ async function inscribirAlumno() {
     } else {
       console.log(data);
       alert("La inscripción se realizó con éxito!");
-      inscripcion = document.getElementById("inscripcion");
-      inscripcion.innerHTML = "";
-      getClasesAlumno(cursoId);
+
+      // inscripcion = document.getElementById("inscripcion");
+      // inscripcion.innerHTML = "";
+      // getClasesAlumno(cursoId);
     }
   } catch (error) {
     console.error("Error al inscribirse:", error);
@@ -125,35 +121,7 @@ function inscripcion(id, from) {
       '<a href="../login/login.html" class="btn btn-primary w-60 mb-3">Comienza ahora</a>';
   }
 }
-//no se ni si se usa tbh
-function showCursos(cursos) {
-  let todosCursos = document.getElementById("curso-detalle");
-  todosCursos.innerHTML = "";
-  cursos.forEach((curso) => {
-    const col = document.createElement("div");
-    col.className = "card";
-    col.innerHTML = `
-        <div class="row justify-content-start">
-          <div class="col-3">
-            <img src="http://localhost:3000${curso.imagen}" class="card-img" alt="Curso">
-          </div>
-          <div class="col-8">
-            <div class="card-body">
-              <h5 class="card-title">${curso.titulo}</h5>
-              <p class="card-text text-muted"> <b>${curso.descripcion}</b> Lorem ipsum dolor sit amet
-                consectetur adipiscing, elit fames eros sapien congue aenean, ridiculus nec phasellus lacus etiam.
-                Torquent fames suspendisse massa ac fermentum sodales, tristique integer nulla pharetra augue at aenean,
-                maecenas luctus purus scelerisque feugiat. Malesuada faucibus fusce sociis class nostra dignissim leo
-                facilisis posuere fames, ac semper potenti fringilla turpis elementum vitae gravida aenean, risus justo
-                purus erat eget integer suscipit lacinia mollis.</p>
-              <a href="../../cursos/curso.html?id=${curso.id}&from=index" class="btn btn-outline-primary mt-2">Ver curso</a>
-            </div>
-          </div>
-        </div>
-        `;
-    todosCursos.appendChild(col);
-  });
-}
+
 //alumno
 function clasevista(idcurso, idclase) {
   cursos[idcurso].clases[idclase].vista = true;

@@ -1,4 +1,4 @@
-export function adaptnavbar(from) {
+export function adaptnavbar(from, nombreprofe) {
   let navbar = document.getElementById("navbar");
   if (from === "index") {
     navbar.className =
@@ -55,7 +55,7 @@ export function adaptnavbar(from) {
                                 <a id="linkMisCursos" class="nav-link" href="../profesor/dashboard/dashboard.html#scrollMisCursos">Mis cursos</a>
                             </li>
                             <li class="nav-item">
-                                <a id="editProfile" class="nav-link" title="Editar Perfil" href="../perfil/perfil.html">Hola, <span id='userName'></span></a>
+                                <a id="editProfile" class="nav-link" title="Editar Perfil" href="../perfil/perfil.html">Hola, ${nombreprofe}</a>
                             </li>
                         </ul>
                     </div>
