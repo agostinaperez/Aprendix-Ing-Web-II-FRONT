@@ -13,22 +13,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const from = params.get("from");
     adaptnavbar(from, user.nombre);
     const cursoId = parseInt(params.get("id"));
-    printcurso(cursoId, from);
+    printcurso(cursoId);
     if (user.rol === "ALUMNO") {
       inscripcion(cursoId, from);
     } else {
       getClasesProfesor(cursoId);
     }
+  } else { //desde index
+    const params = new URLSearchParams(window.location.search);
+    adaptnavbar("index", "");
+    const cursoId = parseInt(params.get("id"));
+    printcurso(cursoId);
+    inscripcion(cursoId, "index")
   }
 });
 
-function printcurso(id, from) {
+function printcurso(id) {
   const cursos = JSON.parse(sessionStorage.getItem("cursos"));
   const curso = cursos.find((c) => c.id === id);
   let cursodetalle = document.getElementById("curso-detalle");
   if (!curso) {
-      cursodetalle.innerHTML =
-        '<p class="text-muted text-center" style="margin: 300px 0px 300px 0px;">No se encontro el curso.</p>';
+    cursodetalle.innerHTML =
+      '<p class="text-muted text-center" style="margin: 300px 0px 300px 0px;">No se encontro el curso.</p>';
   } else {
     //curso individual
     cursodetalle.innerHTML = `
@@ -67,7 +73,7 @@ function logout() {
   sessionStorage.removeItem("user");
   sessionStorage.removeItem("misCursos");
   sessionStorage.removeItem("cursos");
-  //window.location.href = "../login/login.html"; //checkear si no funciona poniendo directamente el link hacia login
+  window.location.href = "../login/login.html"; //checkear si no funciona poniendo directamente el link hacia login
 }
 //alumno
 async function inscribirAlumno() {
@@ -90,10 +96,6 @@ async function inscribirAlumno() {
     } else {
       console.log(data);
       alert("La inscripción se realizó con éxito!");
-      location.reload(); //se supone que recarga la pagina TODO CHEQUEAR
-      // inscripcion = document.getElementById("inscripcion");
-      // inscripcion.innerHTML = "";
-      // getClasesAlumno(cursoId);
     }
   } catch (error) {
     console.error("Error al inscribirse:", error);
@@ -101,18 +103,23 @@ async function inscribirAlumno() {
   }
 }
 
+const boton = document.createElement("button");
+boton.addEventListener("click", () => {
+  inscribirAlumno();
+  inscripcion = document.getElementById("inscripcion");
+  inscripcion.innerHTML = "";
+  getClasesAlumno(cursoId);
+});
 function inscripcion(id, from) {
   const misCursos = JSON.parse(sessionStorage.getItem("misCursos"));
   inscripcion = document.getElementById("inscripcion");
   if (from === "alumno") {
     const cursoAlumno = misCursos ? misCursos.find((c) => c.id === id) : null;
     if (!cursoAlumno) {
-      const boton = document.createElement("button");
-        boton.className = "btn btn-primary w-60 mb-3";
-        boton.textContent = "Inscribirse";
-        boton.id = "btnInscribirse";
-        boton.addEventListener("click", inscribirAlumno);
-        inscripcion.appendChild(boton);
+      boton.className = "btn btn-primary w-60 mb-3";
+      boton.textContent = "Inscribirse";
+      boton.id = "btnInscribirse";
+      inscripcion.appendChild(boton);
     } else {
       getClasesAlumno(cursoAlumno.id);
     }
@@ -124,7 +131,7 @@ function inscripcion(id, from) {
 
 //alumno
 function clasevista(idcurso, idclase) {
-  cursos[idcurso].clases[idclase].vista = true;
+  cursos[ idcurso ].clases[ idclase ].vista = true;
 }
 //alumno
 async function getClasesAlumno(cursoId) {
@@ -136,40 +143,40 @@ async function getClasesAlumno(cursoId) {
     const res = await fetch(`http://localhost:3000/clase/${cursoId}/${alumnoId}`, {
       method: 'GET',
     });
-    
+
     const data = await res.json();
     if (!res.ok) {
       alert(data.error || "Error al obtener las clases");
     } else {
       console.log(data);
       if (data.length > 0) {
-      let ul = document.createElement("ul");
-      ul.className = "nav nav-tabs";
-      ul.id = "clasesTabs";
+        let ul = document.createElement("ul");
+        ul.className = "nav nav-tabs";
+        ul.id = "clasesTabs";
         data.forEach(clase => {
-                const li = document.createElement('li');
-                li.className = 'nav-item';
-                li.innerHTML = `
+          const li = document.createElement('li');
+          li.className = 'nav-item';
+          li.innerHTML = `
                     <button class="nav-link btn-tab" data-bs-toggle="tab" data-bs-target="#clase${clase.id}" 
                     type="button" role="tab" aria-selected="true">
-                        Clase ${clase.id }
+                        Clase ${clase.id}
                     </button>`;
-                ul.appendChild(li);
-            });
-            inscripcion.appendChild(ul);
-            data.forEach(clase => {
-                let div = document.createElement('div');
-                div.className = "tab-content mt-3"
-                div.innerHTML = `
+          ul.appendChild(li);
+        });
+        inscripcion.appendChild(ul);
+        data.forEach(clase => {
+          let div = document.createElement('div');
+          div.className = "tab-content mt-3"
+          div.innerHTML = `
                 <div class="tab-pane fade show" id = "clase${clase.id}">
                     <h5>${clase.nombre}</h5>
                     <p>${clase.descripcion}</p>
                     <a href="http://localhost:3000${clase.archivo}"><b>Material</b></a>
                 </div>
                 `;
-                inscripcion.appendChild(div);
-            });
-      } 
+          inscripcion.appendChild(div);
+        });
+      }
     }
   } catch (error) {
     console.error("Error al traer los cursos:", error);
@@ -260,7 +267,7 @@ function getClasesProfesor(id) {
     </div>`;
   document.getElementById("formAgregarClase")?.addEventListener("submit", addClase);
   document.getElementById("formEditarCurso")?.addEventListener("submit", editCurso);
-    document.getElementById("deleteButton")?.addEventListener("click", deleteCurso);
+  document.getElementById("deleteButton")?.addEventListener("click", deleteCurso);
 
   let ul = document.createElement("ul");
   ul.className = "nav nav-tabs";
@@ -285,13 +292,13 @@ function getClasesProfesor(id) {
                       <h5>${clase.nombre}</h5>
                       <p>${clase.descripcion}</p>
                       <a href="${clase.archivo}"><b>Material</b></a><br>
-                      <button id="delete" class="btn btn-danger w-30">Eliminar Clase</button>
+                      <button id="delete" class="btn btn-danger w-30" onclick="deleteClase(${clase.id})">Eliminar Clase</button>
                   </div>
                   `;
       inscripcion.appendChild(div);
-      document.getElementById("delete").addEventListener("click", () => {
-        deleteClase(clase.id)
-      });
+      // document.getElementById("delete").addEventListener("click", () => {
+      //   deleteClase(clase.id)
+      // });
     });
   }
 }
@@ -303,19 +310,19 @@ async function editCurso(e) {
   const cursoId = parseInt(params.get("id"));
 
   try {
-      const res = await fetch(`http://localhost:3000/curso/edit/${cursoId}`, {
-        method: "POST",
-        body: formData,
-      });
+    const res = await fetch(`http://localhost:3000/curso/edit/${cursoId}`, {
+      method: "POST",
+      body: formData,
+    });
 
-      const data = await res.json();
-      if (!res.ok) {
-        alert(data.error || "Error al editar el curso");
-      } else {
-        alert("Curso editado con éxito");
-        window.location.href = '../profesor/dashboard/dashboard.html'
-      }
-    } catch (error) {
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Error al editar el curso");
+    } else {
+      alert("Curso editado con éxito");
+      window.location.href = '../profesor/dashboard/dashboard.html'
+    }
+  } catch (error) {
     console.error("Error:", error);
     alert("Ocurrió un error en la operación.");
   }
@@ -323,28 +330,28 @@ async function editCurso(e) {
 
 async function deleteCurso() {
   try {
-      const params = new URLSearchParams(window.location.search);
-      const cursoId = parseInt(params.get("id"));
-      const confirmacion = confirm("¿Estás seguro de eliminar este curso?");
-        if (!confirmacion) return;
+    const params = new URLSearchParams(window.location.search);
+    const cursoId = parseInt(params.get("id"));
+    const confirmacion = confirm("¿Estás seguro de eliminar este curso?");
+    if (!confirmacion) return;
 
-        const res = await fetch(`http://localhost:3000/curso/delete/${cursoId}`, {
-          method: "DELETE",
-        });
+    const res = await fetch(`http://localhost:3000/curso/delete/${cursoId}`, {
+      method: "DELETE",
+    });
 
-        const data = await res.json();
-        if (!res.ok) {
-          alert(data.error || "Error al eliminar el curso");
-          console.log(data.error);
-        } else {
-          alert("Curso eliminado con éxito");
-          window.location.href = '../profesor/dashboard/dashboard.html'
-        } 
-      } catch (error) {
-        alert ("Ocurrió un error al eliminar el curso");
-        console.log(error)
-      }
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Error al eliminar el curso");
+      console.log(data.error);
+    } else {
+      alert("Curso eliminado con éxito");
+      window.location.href = '../profesor/dashboard/dashboard.html'
     }
+  } catch (error) {
+    alert("Ocurrió un error al eliminar el curso");
+    console.log(error)
+  }
+}
 
 
 //FUNCIONES DE LA CLASE----------------------------------------------------------------------------------------------
@@ -380,20 +387,20 @@ async function addClase(e) {
 async function deleteClase(claseId) {
   try {
     const confirmacion = confirm("¿Estás seguro de eliminar esta clase?");
-        if (!confirmacion) return;
+    if (!confirmacion) return;
 
-        const res = await fetch(`http://localhost:3000/clase/delete/${claseId}`, {
-          method: "DELETE",
-        });
+    const res = await fetch(`http://localhost:3000/clase/delete/${claseId}`, {
+      method: "DELETE",
+    });
 
-        const data = await res.json();
-        if (!res.ok) {
-          alert(data.error || "Error al eliminar la clase");
-          console.log(data.error);
-        } else {
-          alert("Clase eliminado con éxito");
-        } 
-      } catch (error) {
-        alert ("Ocurrió un error al eliminar la clase");
-      }
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Error al eliminar la clase");
+      console.log(data.error);
+    } else {
+      alert("Clase eliminado con éxito");
     }
+  } catch (error) {
+    alert("Ocurrió un error al eliminar la clase");
+  }
+}

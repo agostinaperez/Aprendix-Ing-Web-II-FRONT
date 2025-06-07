@@ -24,9 +24,9 @@ document.getElementById('cursoForm').addEventListener('submit', async (e) => {
     if (!res.ok) {
       alert(data.error || "Error al crear el curso");
     } else {
-      alert("Curso creado con éxito!");
+      //alert("Curso creado con éxito!");
       console.log(data);
-      window.location.href = "../dashboard/dashboard.html";
+      location.href = "../dashboard/dashboard.html#scrollMisCursos";
     }
   } catch (error) {
     console.error("Error al enviar el formulario:", error);
