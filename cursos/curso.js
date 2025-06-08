@@ -97,7 +97,7 @@ async function inscribirAlumno() {
       console.log(data);
       alert("La inscripción se realizó con éxito!");
       sessionStorage.setItem('vistaActual', 'misCursos');
-      window.location.href='../alumno/dashboard/dashboard.html';
+      window.location.href = '../alumno/dashboard/dashboard.html';
     }
   } catch (error) {
     console.error("Error al inscribirse:", error);
@@ -278,7 +278,7 @@ function getClasesProfesor(id) {
   ul.className = "nav nav-tabs";
   ul.id = "clasesTabs";
   if (curso.clases.length > 0) {
-    let i=1;
+    let i = 1;
     curso.clases.forEach((clase) => {
       const li = document.createElement("li");
       li.className = "nav-item";
@@ -295,17 +295,22 @@ function getClasesProfesor(id) {
       let div = document.createElement("div");
       div.className = "tab-content mt-3";
       div.innerHTML = `
-                  <div class="tab-pane fade" id = "clase${clase.id}">
-                      <h5>${clase.nombre}</h5>
-                      <p>${clase.descripcion}</p>
-                      <a href="http://localhost:3000${clase.archivo}"><b>Material</b></a><br>
-                      <button id="delete" class="btn btn-danger w-30" onclick="deleteClase(${clase.id})">Eliminar Clase</button>
-                  </div>
-                  `;
+        <div class="tab-pane fade" id="clase${clase.id}">
+          <h5>${clase.nombre}</h5>
+          <p>${clase.descripcion}</p>
+          <a href="${clase.archivo}"><b>Material</b></a><br>
+        </div>
+      `;
+      const btnEliminar = document.createElement("button");
+      btnEliminar.className = "btn btn-danger w-30";
+      btnEliminar.textContent = "Eliminar Clase";
+
+      btnEliminar.addEventListener("click", () => {
+        deleteClase(clase.id);
+      });
+      const tabPane = div.querySelector(`#clase${clase.id}`);
+      tabPane.appendChild(btnEliminar);
       inscripcion.appendChild(div);
-      // document.getElementById("delete").addEventListener("click", () => {
-      //   deleteClase(clase.id)
-      // });
     });
   }
 }
