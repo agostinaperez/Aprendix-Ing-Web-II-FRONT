@@ -414,6 +414,8 @@ async function deleteClase(claseId) {
       console.log(data.error);
     } else {
       alert("Clase eliminado con éxito");
+      window.location.href = '../profesor/dashboard/dashboard.html'
+
     }
   } catch (error) {
     alert("Ocurrió un error al eliminar la clase");
