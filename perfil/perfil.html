@@ -54,31 +54,27 @@
       <form id="formPerfil">
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre completo</label>
-          <input type="text" class="form-control" id="registerName" placeholder="Ana Martínez">
+          <input type="text" class="form-control" id="registerName" name="nombre" placeholder="Ana Martínez">
         </div>
         <div class="mb-3">
           <label for="nombre" class="form-label">Nombre de usuario</label>
-          <input type="text" class="form-control" id="registerUsername" placeholder="amartinez123">
+          <input type="text" class="form-control" id="registerUsername" name="usuario" placeholder="amartinez123">
         </div>
         <div class="mb-3">
           <label for="email" class="form-label">Correo electrónico</label>
-          <input type="email" class="form-control" id="registerEmail" placeholder="ejemplo@correo.com">
+          <input type="email" class="form-control" id="registerEmail" name="email" placeholder="ejemplo@correo.com">
         </div>
         <div class="mb-3">
-          <label for="foto" class="form-label">Foto de perfil</label>
-          <input class="form-control" type="file" id="foto">
+          <label for="password" class="form-label">Contraseña actual</label>
+          <input type="password" class="form-control" name="passwordActual" id="registerPassword">
         </div>
         <div class="mb-3">
-          <label for="password" class="form-label">Nueva contraseña</label>
-          <input type="password" class="form-control" id="registerPassword">
-        </div>
-        <div class="mb-3">
-          <label for="confirmar" class="form-label">Confirmar contraseña</label>
-          <input type="password" class="form-control" id="confirmar">
+          <label for="confirmar" class="form-label">Nueva contraseña</label>
+          <input type="password" class="form-control" name="nuevaPassword" id="confirmar">
         </div>
         <div class="row">
-          <a id="cancelar" type="button" href="../alumno/dashboard/dashboard.html" class="btn btn-outline-primary w-50">Cancelar</a>
-          <a id="editProfile" type="submit" href="../alumno/dashboard/dashboard.html" class="btn btn-light w-50">Guardar cambios</a>
+          <a id="cancelar" type="button" class="btn btn-outline-primary w-50">Cancelar</a>
+          <button id="editProfile" type="submit"class="btn btn-light w-50">Guardar cambios</button>
         </div>
         <a id="logout" class="btn btn-danger w-100" onclick="logout()">Cerrar Sesión</a>
       </form>

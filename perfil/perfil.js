@@ -11,6 +11,7 @@ window.addEventListener("DOMContentLoaded", () => {
     registerEmail.value = user.email;
     registerName.value = user.nombre;
     registerUsername.value = user.usuario;
+    registerPassword.value = user.password;
 
     if (user.rol === "PROFESOR") {
       document.getElementById("linkTodosCursos").href="../profesor/dashboard/dashboard.html#scrollInicio"
@@ -21,8 +22,38 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-function updatePerfil() {
-  
+document.getElementById("formPerfil")?.addEventListener("submit", editPerfil);
+
+async function editPerfil(e) {
+  e.preventDefault();
+  alert("EDIT")
+  const formData = new FormData(e.target);
+  const storedUser = sessionStorage.getItem('user') || localStorage.getItem('user');
+  const userId = JSON.parse(storedUser).id;
+
+  try {
+    const res = await fetch(`http://localhost:3000/usuario/edit/${userId}`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Error al editar el perfil");
+    } else {
+      alert("Perfil editado con éxito");
+      sessionStorage.setItem('user', JSON.stringify(data));
+      if (JSON.parse(storedUser).rol === "PROFESOR") {
+        window.location.href = '../profesor/dashboard/dashboard.html'
+      } else {
+        window.location.href = '../alumno/dashboard/dashboard.html'
+      }
+      
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Ocurrió un error en la operación.");
+  }
 }
 
 function logout() {
