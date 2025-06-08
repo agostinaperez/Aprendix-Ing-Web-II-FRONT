@@ -7,8 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const userNombre = document.getElementById("userName");
   if (user) {
     userNombre.textContent = user.nombre;
-    document.getElementById("editProfile").href =
-      "../../perfil/perfil.html?from=alumno&id=${user.id}";
+    document.getElementById("editProfile").href = `../../perfil/perfil.html?from=alumno&id=${user.id}`;
     const params = new URLSearchParams(window.location.search);
     const from = params.get("from");
     adaptnavbar(from, user.nombre);
@@ -32,6 +31,7 @@ function printcurso(id) {
   const cursos = JSON.parse(sessionStorage.getItem("cursos"));
   const curso = cursos.find((c) => c.id === id);
   let cursodetalle = document.getElementById("curso-detalle");
+  cursodetalle.innerHTML='';
   if (!curso) {
     cursodetalle.innerHTML =
       '<p class="text-muted text-center" style="margin: 300px 0px 300px 0px;">No se encontro el curso.</p>';
@@ -108,14 +108,14 @@ async function inscribirAlumno() {
 const boton = document.createElement("button");
 boton.addEventListener("click", () => {
   inscribirAlumno();
-  inscripcion = document.getElementById("inscripcion");
+  const inscripcion = document.getElementById("inscripcion");
   inscripcion.innerHTML = "";
   getClasesAlumno(cursoId);
   showMisCursosSidebar;
 });
 function inscripcion(id, from) {
   const misCursos = JSON.parse(sessionStorage.getItem("misCursos"));
-  inscripcion = document.getElementById("inscripcion");
+  const inscripcion = document.getElementById("inscripcion");
   if (from === "alumno") {
     const cursoAlumno = misCursos ? misCursos.find((c) => c.id === id) : null;
     if (!cursoAlumno) {
@@ -138,7 +138,7 @@ function clasevista(idcurso, idclase) {
 }
 //alumno
 async function getClasesAlumno(cursoId) {
-  inscripcion = document.getElementById("inscripcion");
+  const inscripcion = document.getElementById("inscripcion");
   const storedUser =
     sessionStorage.getItem("user") || localStorage.getItem("user");
   const alumnoId = JSON.parse(storedUser).id;
@@ -188,10 +188,8 @@ async function getClasesAlumno(cursoId) {
   }
 }
 //FUNCIONES DE CURSO (PROFESOR) -----------------------------------------------------------------------------------
-
-
 function getClasesProfesor(id) {
-  inscripcion = document.getElementById("inscripcion");
+  const inscripcion = document.getElementById("inscripcion");
   const cursos = JSON.parse(sessionStorage.getItem("cursos"));
   const curso = cursos.find((c) => c.id === id);
   inscripcion.innerHTML = `
@@ -235,7 +233,7 @@ function getClasesProfesor(id) {
                         <div class="modal-footer">
                             <button type="button" id="deleteButton" class="btn btn-danger w-40" data-bs-dismiss="modal" name="action" value="eliminar">Eliminar curso</button>
                             <button type="button" class="btn btn-outline-primary w-40" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary w-40" data-bs-dismiss="modal" name="action" value="guardar">Guardar cambios</button>
+                            <button id="guardarEdit" type="submit" class="btn btn-primary w-40" data-bs-dismiss="modal" name="action" value="guardar">Guardar cambios</button>
                         </div>
                     </form>
                   </div>
@@ -335,7 +333,8 @@ async function editCurso(e) {
       alert(data.error || "Error al editar el curso");
     } else {
       alert("Curso editado con éxito");
-      window.location.href = '../profesor/dashboard/dashboard.html'
+      // sessionStorage.setItem('curso', JSON.stringify(data));
+      //window.location.href = '../profesor/dashboard/dashboard.html';
     }
   } catch (error) {
     console.error("Error:", error);
@@ -390,7 +389,7 @@ async function addClase(e) {
     } else {
       alert("Clase creada con éxito!");
       console.log(data);
-      getClasesProfesor(cursoId);
+      await getClasesProfesor(cursoId);
     }
   } catch (error) {
     console.error("Error al enviar el formulario:", error);
@@ -414,6 +413,7 @@ async function deleteClase(claseId) {
       console.log(data.error);
     } else {
       alert("Clase eliminado con éxito");
+      await getClasesProfesor(idCurso);
     }
   } catch (error) {
     alert("Ocurrió un error al eliminar la clase");
