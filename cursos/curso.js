@@ -156,15 +156,17 @@ async function getClasesAlumno(cursoId) {
         let ul = document.createElement("ul");
         ul.className = "nav nav-tabs";
         ul.id = "clasesTabs";
+        let i = 1;
         data.forEach(clase => {
           const li = document.createElement('li');
           li.className = 'nav-item';
           li.innerHTML = `
                     <button class="nav-link btn-tab" data-bs-toggle="tab" data-bs-target="#clase${clase.id}" 
                     type="button" role="tab" aria-selected="true">
-                        Clase ${clase.id}
+                        Clase ${i}
                     </button>`;
           ul.appendChild(li);
+          i++;
         });
         inscripcion.appendChild(ul);
         data.forEach(clase => {
@@ -276,15 +278,17 @@ function getClasesProfesor(id) {
   ul.className = "nav nav-tabs";
   ul.id = "clasesTabs";
   if (curso.clases.length > 0) {
+    let i=1;
     curso.clases.forEach((clase) => {
       const li = document.createElement("li");
       li.className = "nav-item";
       li.innerHTML = `
                       <button class="nav-link btn-tab" data-bs-toggle="tab" data-bs-target="#clase${clase.id}" 
                       type="button" role="tab" aria-selected="true">
-                          Clase ${clase.id}
+                          Clase ${i}
                       </button>`;
       ul.appendChild(li);
+      i++;
     });
     inscripcion.appendChild(ul);
     curso.clases.forEach((clase) => {
@@ -294,7 +298,7 @@ function getClasesProfesor(id) {
                   <div class="tab-pane fade" id = "clase${clase.id}">
                       <h5>${clase.nombre}</h5>
                       <p>${clase.descripcion}</p>
-                      <a href="${clase.archivo}"><b>Material</b></a><br>
+                      <a href="http://localhost:3000${clase.archivo}"><b>Material</b></a><br>
                       <button id="delete" class="btn btn-danger w-30" onclick="deleteClase(${clase.id})">Eliminar Clase</button>
                   </div>
                   `;

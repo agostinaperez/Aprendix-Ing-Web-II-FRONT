@@ -24,6 +24,7 @@ async function getCursosProfesor(profesorId) {
         const cantCursos = document.getElementById("cantCursos");
         cantCursos.innerHTML = data.length;
         sessionStorage.setItem('cursos', JSON.stringify(data));
+        countAlumnosInscritos(profesorId);
         showCursos(data);
       } 
     }
@@ -31,6 +32,24 @@ async function getCursosProfesor(profesorId) {
     console.error("Error al traer los cursos:", error);
   }
 
+}
+
+async function countAlumnosInscritos(profesorId) {
+  try {
+    const res = await fetch(`http://localhost:3000/inscripcion/alumnos-inscritos/${profesorId}`, {
+      method: 'GET',
+    });
+    
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Error al obtener los cursos");
+    } else {
+        const cantAlumnos = document.getElementById("cantAlumnos");
+        cantAlumnos.innerHTML = JSON.parse(data);
+    }
+  } catch (error) {
+    console.error("Error al traer los cursos:", error);
+  }
 }
 
 function showCursos(cursos) {
