@@ -87,9 +87,8 @@ async function auth(event, isRegistro) {
 
         if (remember) {
           localStorage.setItem('user', JSON.stringify(user));
-        } else {
-          sessionStorage.setItem('user',  JSON.stringify(user));
         }
+        sessionStorage.setItem('user',  JSON.stringify(user));
 
         if (user.rol === "ALUMNO") {
           window.location.href = '../alumno/dashboard/dashboard.html';

@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
-  const storedUser = sessionStorage.getItem('user') || localStorage.getItem('user');
+  const storedUser = sessionStorage.getItem('user');
   const user = storedUser ? JSON.parse(storedUser) : null;
   const userNombre = document.getElementById('userName');
   const registerName = document.getElementById('registerName');
@@ -28,7 +28,7 @@ async function editPerfil(e) {
   e.preventDefault();
   alert("EDIT")
   const formData = new FormData(e.target);
-  const storedUser = sessionStorage.getItem('user') || localStorage.getItem('user');
+  const storedUser = sessionStorage.getItem('user');
   const userId = JSON.parse(storedUser).id;
 
   try {

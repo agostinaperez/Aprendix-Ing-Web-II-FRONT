@@ -2,7 +2,7 @@ import { adaptnavbar, showMisCursosSidebar } from "../navbar/navbar.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const storedUser =
-    sessionStorage.getItem("user") || localStorage.getItem("user");
+    sessionStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
   const userNombre = document.getElementById("userName");
   if (user) {
@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const from = params.get("from");
     adaptnavbar(from, user.nombre);
     const cursoId = parseInt(params.get("id"));
+
     printcurso(cursoId);
     if (user.rol === "ALUMNO") {
       inscripcion(cursoId, from);
@@ -78,7 +79,7 @@ function logout() {
 //alumno
 async function inscribirAlumno() {
   const storedUser =
-    sessionStorage.getItem("user") || localStorage.getItem("user");
+    sessionStorage.getItem("user");
   const alumnoId = JSON.parse(storedUser).id;
   const params = new URLSearchParams(window.location.search);
   const cursoId = parseInt(params.get("id"));
@@ -140,7 +141,7 @@ function clasevista(idcurso, idclase) {
 async function getClasesAlumno(cursoId) {
   const inscripcion = document.getElementById("inscripcion");
   const storedUser =
-    sessionStorage.getItem("user") || localStorage.getItem("user");
+    sessionStorage.getItem("user");
   const alumnoId = JSON.parse(storedUser).id;
   try {
     const res = await fetch(`http://localhost:3000/clase/${cursoId}/${alumnoId}`, {

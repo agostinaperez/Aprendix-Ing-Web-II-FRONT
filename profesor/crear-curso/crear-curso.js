@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
-  const storedUser = sessionStorage.getItem('user') || localStorage.getItem('user');
+  const storedUser = sessionStorage.getItem('user');
   const user = storedUser ? JSON.parse(storedUser) : null;
   const userNombre = document.getElementById('userName');
   if (user) {
@@ -10,7 +10,7 @@ window.addEventListener("DOMContentLoaded", () => {
 document.getElementById('cursoForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const formData = new FormData(e.target);
-  const storedUser =  sessionStorage.getItem('user') || localStorage.getItem('user');
+  const storedUser =  sessionStorage.getItem('user');
   const user = storedUser ? JSON.parse(storedUser) : null;
   formData.append("profesorId", user.id); 
 
