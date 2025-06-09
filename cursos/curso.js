@@ -334,7 +334,7 @@ async function editCurso(e) {
     } else {
       alert("Curso editado con éxito");
       // sessionStorage.setItem('curso', JSON.stringify(data));
-      //window.location.href = '../profesor/dashboard/dashboard.html';
+      window.location.href = '../profesor/dashboard/dashboard.html#scrollMisCursos';
     }
   } catch (error) {
     console.error("Error:", error);
@@ -359,7 +359,7 @@ async function deleteCurso() {
       console.log(data.error);
     } else {
       alert("Curso eliminado con éxito");
-      window.location.href = '../profesor/dashboard/dashboard.html'
+      window.location.href = '../profesor/dashboard/dashboard.html#scrollMisCursos';
     }
   } catch (error) {
     alert("Ocurrió un error al eliminar el curso");
@@ -402,9 +402,10 @@ async function addClase(e) {
     if (!res.ok) {
       alert(data.error || "Error al crear la clase");
     } else {
-      alert("Clase creada con éxito!");
+      //alert("Clase creada con éxito!");
       console.log(data);
-      await getClasesProfesor(cursoId);
+      // getClasesProfesor(cursoId);
+      window.location.href = '../profesor/dashboard/dashboard.html#scrollMisCursos';
     }
   } catch (error) {
     console.error("Error al enviar el formulario:", error);
@@ -427,8 +428,9 @@ async function deleteClase(claseId) {
       alert(data.error || "Error al eliminar la clase");
       console.log(data.error);
     } else {
-      alert("Clase eliminado con éxito");
-      await getClasesProfesor(idCurso);
+      //alert("Clase eliminado con éxito");
+      // getClasesProfesor(idCurso);
+      window.location.href = '../profesor/dashboard/dashboard.html#scrollMisCursos';
     }
   } catch (error) {
     alert("Ocurrió un error al eliminar la clase");
