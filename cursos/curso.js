@@ -367,7 +367,22 @@ async function deleteCurso() {
   }
 }
 
+async function getCursoById(cursoId) {
+  try {
+    const res = await fetch(`http://localhost:3000/curso/${cursoId}`, {
+      method: 'GET',
+    });
 
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Error al obtener el curso");
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error("Error al traer el curso:", error);
+  }
+}
 //FUNCIONES DE LA CLASE----------------------------------------------------------------------------------------------
 async function addClase(e) {
   e.preventDefault();
