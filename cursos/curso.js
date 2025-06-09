@@ -299,7 +299,7 @@ function getClasesProfesor(id) {
         <div class="tab-pane fade" id="clase${clase.id}">
           <h5>${clase.nombre}</h5>
           <p>${clase.descripcion}</p>
-          <a href="${clase.archivo}"><b>Material</b></a><br>
+          <a href="http://localhost:3000${clase.archivo}"><b>Material</b></a><br>
         </div>
       `;
       const btnEliminar = document.createElement("button");
