@@ -26,7 +26,6 @@ document.getElementById("formPerfil")?.addEventListener("submit", editPerfil);
 
 async function editPerfil(e) {
   e.preventDefault();
-  alert("EDIT")
   const formData = new FormData(e.target);
   const storedUser = sessionStorage.getItem('user');
   const userId = JSON.parse(storedUser).id;

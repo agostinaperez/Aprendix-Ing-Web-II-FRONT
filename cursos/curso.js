@@ -108,6 +108,8 @@ async function inscribirAlumno() {
 
 const boton = document.createElement("button");
 boton.addEventListener("click", () => {
+  const params = new URLSearchParams(window.location.search);
+    const cursoId = parseInt(params.get("id"));
   inscribirAlumno();
   const inscripcion = document.getElementById("inscripcion");
   inscripcion.innerHTML = "";
@@ -140,8 +142,7 @@ function clasevista(idcurso, idclase) {
 //alumno
 async function getClasesAlumno(cursoId) {
   const inscripcion = document.getElementById("inscripcion");
-  const storedUser =
-    sessionStorage.getItem("user");
+  const storedUser = sessionStorage.getItem("user");
   const alumnoId = JSON.parse(storedUser).id;
   try {
     const res = await fetch(`http://localhost:3000/clase/${cursoId}/${alumnoId}`, {
