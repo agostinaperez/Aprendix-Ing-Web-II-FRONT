@@ -46,3 +46,7 @@
 .modal-footer button{
     width: 200px;
 }
+.clase-vista{
+    font-weight: normal;
+    font-style: oblique;
+}

@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const userNombre = document.getElementById("userName");
   if (user) {
     userNombre.textContent = user.nombre;
-    document.getElementById("editProfile").href = `../../perfil/perfil.html?from=alumno&id=${user.id}`;
+    document.getElementById("editProfile").href = `../perfil/perfil.html?from=alumno&id=${user.id}`;
     const params = new URLSearchParams(window.location.search);
     const from = params.get("from");
     adaptnavbar(from, user.nombre);
@@ -134,13 +134,19 @@ function inscripcion(id, from) {
       '<a href="../login/login.html" class="btn btn-primary w-60 mb-3">Comienza ahora</a>';
   }
 }
-
+// let idClase;
+// let idAlumno;
+// let material = document.createElement('a');
+// material.addEventListener("click", () => {
+//   clasevista(idAlumno, idClase);
+// });
 //alumno
 async function getClasesAlumno(cursoId) {
   const inscripcion = document.getElementById("inscripcion");
   const storedUser = sessionStorage.getItem("user");
   const alumnoId = JSON.parse(storedUser).id;
-  idAlumno=alumnoId;
+  
+  // idAlumno=alumnoId;
   try {
     const res = await fetch(`http://localhost:3000/clase/${cursoId}/${alumnoId}`, {
       method: 'GET',
@@ -159,10 +165,11 @@ async function getClasesAlumno(cursoId) {
         data.forEach(clase => {
           const li = document.createElement('li');
           li.className = 'nav-item';
+          console.log("clase vista?=",clase.vista);
           li.innerHTML = `
-                    <button class="nav-link btn-tab" data-bs-toggle="tab" data-bs-target="#clase${clase.id}" 
+                    <button  ${clase.vista ? 'class="nav-link btn-tab clase-vista"' : 'class="nav-link btn-tab"'} data-bs-toggle="tab" data-bs-target="#clase${clase.id}" 
                     type="button" role="tab" aria-selected="true">
-                        Clase ${i}
+                        Clase ${clase.id}
                     </button>`;
           ul.appendChild(li);
           i++;
@@ -174,22 +181,24 @@ async function getClasesAlumno(cursoId) {
           let divtabepane = document.createElement('div');
           divtabepane.className = "tab-pane fade show";
           divtabepane.id = `clase${clase.id}`;
-          if (clase.vista){
-            divtabepane = `
-                    <h5 class="text-muted"><em>${clase.nombre}</em></h5>
-                    <p>${clase.descripcion}</p>
-                    <a href="http://localhost:3000${clase.archivo}"><b>Material</b></a>
-                  `;
-          } else{
-              divtabepane.innerHTML = `
-                    <h5>${clase.nombre}</h5>
-                    <p>${clase.descripcion}</p>
-                  `;
-              material.href = `http://localhost:3000${clase.archivo}`;
-              material.innerHTML = "<b>Material</b>";
-              divtabepane.appendChild(material);
-              idClase=clase.id;
-          }
+          divtabepane.innerHTML = `
+            <h4>${clase.nombre}</h4>
+            <p>${clase.descripcion}</p>
+          `;
+          
+          let material = document.createElement('a');
+          material.href = `http://localhost:3000${clase.archivo}`;
+          material.innerHTML = "<b>Material</b>";
+          const claseId=clase.id;
+          material.addEventListener("click", async(e) => {
+            e.preventDefault();
+            console.log("clase id materialClick:", claseId);
+            // await clasevista(alumnoId, clase.id);
+            // window.open(material.href, '_blank');
+            (await clasevista(alumnoId, claseId))?window.open(material.href, '_blank'):alert("no se pudo marcar vista");
+          });
+
+          divtabepane.appendChild(material);
           div.appendChild(divtabepane);
           inscripcion.appendChild(div);
         });
@@ -199,35 +208,29 @@ async function getClasesAlumno(cursoId) {
     console.error("Error al traer los cursos:", error);
   }
 }
-let idClase;
-let idAlumno;
-let material = document.createElement('a');
-material.addEventListener("click", () => {
-  clasevista(idAlumno, idClase);
-});
 
-async function clasevista(idalumno, idclase) {
-  e.preventDefault();
-
-  const formData = new FormData(e.target);
-  formData.append("alumnoId", idalumno);
-
+async function clasevista(alumnoId, claseId) {
   try {
-    const res = await fetch(`http://localhost:3000/${idclase}/vista`, {
+    console.log("clase id clasevista():", claseId); // aca llega bien el id
+    const res = await fetch(`http://localhost:3000/clase/vista`, {
       method: "POST",
-      body: formData,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ alumnoId, claseId }),
     });
 
     const data = await res.json();
     if (!res.ok) {
-      alert(data.error || "Error al crear la clase");
+      alert(data.error || "Error al marcar la clase como vista");
+      return false;
     } else {
       alert("Clase vista con éxito!");
       console.log(data);
+      return true;
     }
   } catch (error) {
     console.error("Error al marcar clase como vista:", error);
     alert("Ocurrió un error al marcar la clase como vista.");
+    return false;
   }
 }
 //FUNCIONES DE CURSO (PROFESOR) -----------------------------------------------------------------------------------
