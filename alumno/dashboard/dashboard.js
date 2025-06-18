@@ -106,7 +106,7 @@ let cursos = [];
 
 const searchInput = document.getElementById('searchInput');
 const resultsContainer = document.getElementById('resultsContainer');
-const todosCursosContainer = document.getElementById('todosCursos');
+let todosCursosContainer = document.getElementById('todosCursos');
 
 function showCursos(cursos) {
   let todosCursos = document.getElementById('todosCursos');
@@ -180,7 +180,11 @@ searchInput.addEventListener('input', () => {
 document.getElementById('linkMisCursos')?.addEventListener('click', (e) => {
   e.preventDefault();
   const misCursos = JSON.parse(sessionStorage.getItem("misCursos"));
-  showCursos(misCursos);
+  if (misCursos.length==0){
+    todosCursosContainer.innerHTML ='<p class="text-center text-muted" style="padding: 200px;">No se encontraron resultados.</p>';
+  } else{
+    showCursos(misCursos);
+  }
   sessionStorage.setItem('vistaActual', 'misCursos');
   document.getElementById('buscarCursos').innerHTML = 'Buscar Mis Cursos';
   document.getElementById('searchInput').placeholder = "¿Qué deseas seguir aprendiendo?";

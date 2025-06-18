@@ -136,14 +136,11 @@ function inscripcion(id, from) {
 }
 
 //alumno
-function clasevista(idcurso, idclase) {
-  cursos[ idcurso ].clases[ idclase ].vista = true;
-}
-//alumno
 async function getClasesAlumno(cursoId) {
   const inscripcion = document.getElementById("inscripcion");
   const storedUser = sessionStorage.getItem("user");
   const alumnoId = JSON.parse(storedUser).id;
+  idAlumno=alumnoId;
   try {
     const res = await fetch(`http://localhost:3000/clase/${cursoId}/${alumnoId}`, {
       method: 'GET',
@@ -173,20 +170,64 @@ async function getClasesAlumno(cursoId) {
         inscripcion.appendChild(ul);
         data.forEach(clase => {
           let div = document.createElement('div');
-          div.className = "tab-content mt-3"
-          div.innerHTML = `
-                <div class="tab-pane fade show" id = "clase${clase.id}">
-                    <h5>${clase.nombre}</h5>
+          div.className = "tab-content mt-3";
+          let divtabepane = document.createElement('div');
+          divtabepane.className = "tab-pane fade show";
+          divtabepane.id = `clase${clase.id}`;
+          if (clase.vista){
+            divtabepane = `
+                    <h5 class="text-muted"><em>${clase.nombre}</em></h5>
                     <p>${clase.descripcion}</p>
                     <a href="http://localhost:3000${clase.archivo}"><b>Material</b></a>
-                </div>
-                `;
+                  `;
+          } else{
+              divtabepane.innerHTML = `
+                    <h5>${clase.nombre}</h5>
+                    <p>${clase.descripcion}</p>
+                  `;
+              material.href = `http://localhost:3000${clase.archivo}`;
+              material.innerHTML = "<b>Material</b>";
+              divtabepane.appendChild(material);
+              idClase=clase.id;
+          }
+          div.appendChild(divtabepane);
           inscripcion.appendChild(div);
         });
       }
     }
   } catch (error) {
     console.error("Error al traer los cursos:", error);
+  }
+}
+let idClase;
+let idAlumno;
+let material = document.createElement('a');
+material.addEventListener("click", () => {
+  clasevista(idAlumno, idClase);
+});
+
+async function clasevista(idalumno, idclase) {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+  formData.append("alumnoId", idalumno);
+
+  try {
+    const res = await fetch(`http://localhost:3000/${idclase}/vista`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "Error al crear la clase");
+    } else {
+      alert("Clase vista con éxito!");
+      console.log(data);
+    }
+  } catch (error) {
+    console.error("Error al marcar clase como vista:", error);
+    alert("Ocurrió un error al marcar la clase como vista.");
   }
 }
 //FUNCIONES DE CURSO (PROFESOR) -----------------------------------------------------------------------------------
