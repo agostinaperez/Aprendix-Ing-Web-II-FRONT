@@ -134,13 +134,7 @@ function inscripcion(id, from) {
       '<a href="../login/login.html" class="btn btn-primary w-60 mb-3">Comienza ahora</a>';
   }
 }
-// let idClase;
-// let idAlumno;
-// let material = document.createElement('a');
-// material.addEventListener("click", () => {
-//   clasevista(idAlumno, idClase);
-// });
-//alumno
+
 async function getClasesAlumno(cursoId) {
   const inscripcion = document.getElementById("inscripcion");
   const storedUser = sessionStorage.getItem("user");
@@ -169,7 +163,7 @@ async function getClasesAlumno(cursoId) {
           li.innerHTML = `
                     <button  ${clase.vista ? 'class="nav-link btn-tab clase-vista"' : 'class="nav-link btn-tab"'} data-bs-toggle="tab" data-bs-target="#clase${clase.id}" 
                     type="button" role="tab" aria-selected="true">
-                        Clase ${clase.id}
+                        Clase ${i}
                     </button>`;
           ul.appendChild(li);
           i++;
@@ -193,9 +187,7 @@ async function getClasesAlumno(cursoId) {
           material.addEventListener("click", async(e) => {
             e.preventDefault();
             console.log("clase id materialClick:", claseId);
-            // await clasevista(alumnoId, clase.id);
-            // window.open(material.href, '_blank');
-            (await clasevista(alumnoId, claseId))?window.open(material.href, '_blank'):alert("no se pudo marcar vista");
+            (await clasevista(alumnoId, claseId))? window.open(material.href, '_blank') : alert("no se pudo marcar vista");
           });
 
           divtabepane.appendChild(material);
@@ -223,7 +215,6 @@ async function clasevista(alumnoId, claseId) {
       alert(data.error || "Error al marcar la clase como vista");
       return false;
     } else {
-      alert("Clase vista con éxito!");
       console.log(data);
       return true;
     }
